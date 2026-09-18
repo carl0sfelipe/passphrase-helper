@@ -22,10 +22,12 @@ THE SOFTWARE.
 
 Embedded word lists in words.js:
 
-- EFF Large, Short 1, and Short 2 wordlists
-  Copyright Electronic Frontier Foundation, CC BY 3.0 US
-  https://www.eff.org/copyright
-  https://creativecommons.org/licenses/by/3.0/us/
+- EFF Large, Short 1, and Short 2 — Electronic Frontier Foundation, CC BY 3.0 US
+- 1Password AgileWords (1Password/spg testdata)
 - BIP-39 language wordlists (Bitcoin BIPs)
-- Diceware original and Beale lists (Arnold G. Reinhold)
+- SLIP-39 (Trezor / satoshilabs slips)
+- Monero English mnemonic list
+- Diceware original, Beale, and 8k (Arnold G. Reinhold)
+- Orchard Street wordlists (sts10)
+- Niceware 2^16 list (diracdeltas/niceware, SIL-derived)
 - Google 10,000 English (first20hours/google-10000-english)

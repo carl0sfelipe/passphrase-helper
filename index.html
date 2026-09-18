@@ -16,14 +16,16 @@
       <p class="kicker" id="kicker">todas as listas</p>
       <h1>Ajudante de passphrase</h1>
       <p class="lede">
-        Digite o que conseguir ler da sua letra. As sugestões vêm só desta página.
-        <strong>Tab</strong> completa. Nada é enviado, gravado ou medido.
+        Não há banco de dados. As listas oficiais de passphrase (gerenciadores,
+        carteiras, Diceware) estão neste arquivo. <strong>Tab</strong> completa.
+        Nada é enviado, gravado ou medido.
       </p>
     </header>
 
     <section class="lists" aria-labelledby="list-label">
       <h2 id="list-label">Lista de palavras</h2>
-      <div class="pills" id="list-pills" role="radiogroup" aria-label="Lista"></div>
+      <p class="list-note">Padrão: união de todas. Ou escolha a lista do programa que gerou a sua.</p>
+      <select id="wordlist" aria-labelledby="list-label"></select>
     </section>
 
     <section class="composer" aria-labelledby="composer-label">
@@ -88,16 +90,15 @@
     <details class="notes">
       <summary>Como usar e o que esta página não faz</summary>
       <ul>
-        <li>Comece em <strong>Todas</strong> (união das listas). Se a palavra ainda não aparecer, ela não está nas listas embutidas — você pode mesmo assim digitar e copiar.</li>
-        <li>EFF Short 2 e BIP-39 têm prefixo único (3 ou 4 letras). Nas outras, o Tab completa a melhor sugestão.</li>
-        <li>Erros de inglês próximos (1–2 letras) ainda aparecem nas sugestões.</li>
-        <li>A passphrase vive só na memória desta aba. Fechar ou recarregar apaga tudo. Não há cookies, <code>localStorage</code>, analytics nem pedidos de rede.</li>
-        <li>GitHub Pages só entrega estes arquivos estáticos. O que você digita não vai para o GitHub. Para zero rastro de IP no host, baixe a pasta e abra o <code>index.html</code> offline.</li>
-        <li>Listas: EFF Large / Short 1 / Short 2 (CC BY 3.0 US), BIP-39 EN/PT/ES/FR/IT, Diceware original, Beale, inglês comum (~10 mil).</li>
+        <li>Não existe servidor nem banco: <code>words.js</code> já traz as listas. Depois do carregamento a página não faz pedido de rede.</li>
+        <li>Comece em <strong>Todas</strong>. Se ainda não sugerir, a palavra não está nessas listas — você pode digitar e copiar do mesmo jeito.</li>
+        <li>EFF Large é a do Bitwarden/KeePassXC. 1Password, BIP-39, SLIP-39, Monero, Diceware, Orchard Street e Niceware também estão no seletor.</li>
+        <li>A passphrase vive só na memória desta aba. Sem cookies, <code>localStorage</code> ou analytics.</li>
+        <li>GitHub Pages só entrega os arquivos. Para zero rastro de IP, baixe a pasta e abra o <code>index.html</code> offline.</li>
       </ul>
     </details>
   </main>
-  <script src="words.js"></script>
-  <script src="app.js"></script>
+  <script src="words.js?v=3"></script>
+  <script src="app.js?v=4"></script>
 </body>
 </html>

@@ -13,7 +13,7 @@
   const hideBtn = document.getElementById("hide");
   const copyNote = document.getElementById("copy-note");
   const styleInputs = document.querySelectorAll('input[name="style"]');
-  const listPills = document.getElementById("list-pills");
+  const listSelect = document.getElementById("wordlist");
   const kickerEl = document.getElementById("kicker");
 
   const listSets = {};
@@ -41,6 +41,7 @@
   let words = [];
   let byLower = new Map();
   let prefixUnique = new Map();
+  let prefix2 = new Map();
   let suggestions = [];
   let selected = 0;
   let hidden = false;
@@ -62,17 +63,36 @@
     words = catalog[activeId] || [];
     byLower = new Map(words.map((w) => [w.toLowerCase(), w]));
     prefixUnique = new Map();
+    prefix2 = new Map();
     const n = currentMeta().uniquePrefix || 0;
-    if (!n) return;
-    const counts = new Map();
+    const counts = n ? new Map() : null;
     for (const word of words) {
-      const prefix = word.slice(0, n).toLowerCase();
-      counts.set(prefix, (counts.get(prefix) || 0) + 1);
+      const lower = word.toLowerCase();
+      const two = lower.slice(0, 2);
+      if (!prefix2.has(two)) prefix2.set(two, []);
+      prefix2.get(two).push(word);
+      if (counts) {
+        const prefix = lower.slice(0, n);
+        counts.set(prefix, (counts.get(prefix) || 0) + 1);
+      }
     }
-    for (const word of words) {
-      const prefix = word.slice(0, n).toLowerCase();
-      if (counts.get(prefix) === 1) prefixUnique.set(prefix, word);
+    if (counts) {
+      for (const word of words) {
+        const prefix = word.slice(0, n).toLowerCase();
+        if (counts.get(prefix) === 1) prefixUnique.set(prefix, word);
+      }
     }
+  }
+
+  function candidates(query) {
+    const q = query.toLowerCase();
+    if (q.length >= 2) return prefix2.get(q.slice(0, 2)) || [];
+    if (!q) return [];
+    const out = [];
+    for (const [key, arr] of prefix2) {
+      if (key.startsWith(q[0])) out.push(...arr);
+    }
+    return out;
   }
 
   function updateKicker() {
@@ -154,8 +174,9 @@
     const contains = [];
     const near = [];
     const uniqueLen = currentMeta().uniquePrefix || 0;
+    const pool = candidates(q);
 
-    for (const word of words) {
+    for (const word of pool) {
       const w = word.toLowerCase();
       if (w === q || w.startsWith(q)) {
         starts.push(word);
@@ -171,7 +192,19 @@
       if (d <= maxDistance) near.push({ word, d });
     }
 
-    starts.sort((a, b) => a.length - b.length || a.localeCompare(b));
+    const preferred = ["eff_large", "bip39_en", "onepassword", "english10k", "slip39", "monero_en", "diceware"];
+    const popularity = (word) => {
+      const key = word.toLowerCase();
+      for (const id of preferred) {
+        if (listSets[id]?.has(key)) return 0;
+      }
+      return 1;
+    };
+    starts.sort((a, b) => {
+      const exactA = a.toLowerCase() === q ? 0 : 1;
+      const exactB = b.toLowerCase() === q ? 0 : 1;
+      return exactA - exactB || popularity(a) - popularity(b) || a.length - b.length || a.localeCompare(b);
+    });
     contains.sort((a, b) => {
       const ia = a.toLowerCase().indexOf(q);
       const ib = b.toLowerCase().indexOf(q);
@@ -321,22 +354,29 @@
     render();
   }
 
-  function buildListPills() {
-    if (!meta.length) return;
-    listPills.replaceChildren(
-      ...meta.map((item, i) => {
-        const label = document.createElement("label");
-        label.className = "pill";
-        const input = document.createElement("input");
-        input.type = "radio";
-        input.name = "wordlist";
-        input.value = item.id;
-        input.checked = item.id === "all" || (i === 0 && !meta.some((m) => m.id === "all"));
-        input.addEventListener("change", () => setList(item.id));
-        label.append(input, document.createTextNode(` ${item.label}`));
-        return label;
-      })
-    );
+  function buildListSelect() {
+    if (!meta.length || !listSelect) return;
+    const groups = new Map();
+    for (const item of meta) {
+      const name = item.group || "Outras";
+      if (!groups.has(name)) groups.set(name, []);
+      groups.get(name).push(item);
+    }
+    listSelect.replaceChildren();
+    for (const [name, items] of groups) {
+      const group = document.createElement("optgroup");
+      group.label = name;
+      for (const item of items) {
+        const option = document.createElement("option");
+        option.value = item.id;
+        const count = (catalog[item.id] || []).length.toLocaleString("pt-BR");
+        option.textContent = `${item.label} · ${count}`;
+        if (item.id === "all") option.selected = true;
+        group.append(option);
+      }
+      listSelect.append(group);
+    }
+    listSelect.addEventListener("change", () => setList(listSelect.value));
   }
 
   draftEl.addEventListener("input", () => {
@@ -435,6 +475,6 @@
     return;
   }
 
-  buildListPills();
+  buildListSelect();
   setList("all");
 })();
