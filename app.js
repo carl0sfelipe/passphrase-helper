@@ -1,8 +1,6 @@
 (() => {
-  const words = Array.isArray(window.WORDLIST) ? window.WORDLIST : [];
-  const byLower = new Map(words.map((w) => [w.toLowerCase(), w]));
-  const prefix3 = new Map();
-  for (const w of words) prefix3.set(w.slice(0, 3).toLowerCase(), w);
+  const lists = window.WORDLISTS && typeof window.WORDLISTS === "object" ? window.WORDLISTS : {};
+  const meta = Array.isArray(window.WORDLIST_META) ? window.WORDLIST_META : [];
 
   const draftEl = document.getElementById("draft");
   const suggestEl = document.getElementById("suggest");
@@ -15,10 +13,76 @@
   const hideBtn = document.getElementById("hide");
   const copyNote = document.getElementById("copy-note");
   const styleInputs = document.querySelectorAll('input[name="style"]');
+  const listPills = document.getElementById("list-pills");
+  const kickerEl = document.getElementById("kicker");
 
+  const listSets = {};
+  for (const [id, arr] of Object.entries(lists)) {
+    listSets[id] = new Set(arr.map((w) => w.toLowerCase()));
+  }
+
+  const catalog = {};
+  const all = [];
+  const allSeen = new Set();
+  for (const item of meta) {
+    if (item.id === "all") continue;
+    const arr = lists[item.id] || [];
+    catalog[item.id] = arr;
+    for (const word of arr) {
+      const key = word.toLowerCase();
+      if (allSeen.has(key)) continue;
+      allSeen.add(key);
+      all.push(word);
+    }
+  }
+  catalog.all = all;
+
+  let activeId = "all";
+  let words = [];
+  let byLower = new Map();
+  let prefixUnique = new Map();
   let suggestions = [];
   let selected = 0;
   let hidden = false;
+
+  function currentMeta() {
+    return meta.find((item) => item.id === activeId) || { id: activeId, label: activeId, uniquePrefix: 0 };
+  }
+
+  function sourceTag(word) {
+    const key = word.toLowerCase();
+    for (const item of meta) {
+      if (item.id === "all") continue;
+      if (listSets[item.id]?.has(key)) return item.short;
+    }
+    return "";
+  }
+
+  function indexActive() {
+    words = catalog[activeId] || [];
+    byLower = new Map(words.map((w) => [w.toLowerCase(), w]));
+    prefixUnique = new Map();
+    const n = currentMeta().uniquePrefix || 0;
+    if (!n) return;
+    const counts = new Map();
+    for (const word of words) {
+      const prefix = word.slice(0, n).toLowerCase();
+      counts.set(prefix, (counts.get(prefix) || 0) + 1);
+    }
+    for (const word of words) {
+      const prefix = word.slice(0, n).toLowerCase();
+      if (counts.get(prefix) === 1) prefixUnique.set(prefix, word);
+    }
+  }
+
+  function updateKicker() {
+    const item = currentMeta();
+    const count = words.length.toLocaleString("pt-BR");
+    kickerEl.textContent =
+      item.id === "all"
+        ? `todas as listas · ${count} palavras únicas`
+        : `${item.label} · ${count} palavras`;
+  }
 
   function cap(word) {
     return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
@@ -89,6 +153,7 @@
     const starts = [];
     const contains = [];
     const near = [];
+    const uniqueLen = currentMeta().uniquePrefix || 0;
 
     for (const word of words) {
       const w = word.toLowerCase();
@@ -124,16 +189,24 @@
     };
 
     for (const word of starts) {
-      const unique = q.length >= 3 && prefix3.get(q.slice(0, 3)) === word;
-      push(
-        word,
-        word.toLowerCase() === q ? "exata" : unique ? "prefixo único" : "começa com"
-      );
+      const unique =
+        uniqueLen &&
+        q.length >= uniqueLen &&
+        prefixUnique.get(q.slice(0, uniqueLen)) === word;
+      let tag = "começa com";
+      if (word.toLowerCase() === q) tag = "exata";
+      else if (unique) tag = "prefixo único";
+      else if (activeId === "all") tag = sourceTag(word) || tag;
+      push(word, tag);
     }
 
     if (!starts.length) {
-      for (const word of contains) push(word, "contém");
-      for (const item of near) push(item.word, "perto");
+      for (const word of contains) {
+        push(word, activeId === "all" ? sourceTag(word) || "contém" : "contém");
+      }
+      for (const item of near) {
+        push(item.word, "perto");
+      }
     }
 
     return out.slice(0, 8);
@@ -166,8 +239,9 @@
     }
 
     const uniqueHit = suggestions[0]?.tag === "prefixo único";
+    const n = currentMeta().uniquePrefix;
     hintEl.textContent = uniqueHit
-      ? "3 letras já fecham esta palavra — Tab completa"
+      ? `${n} letras já fecham esta palavra — Tab completa`
       : `${suggestions.length} na lista`;
 
     listEl.replaceChildren(
@@ -178,10 +252,10 @@
         li.dataset.index = String(i);
         const name = document.createElement("span");
         name.textContent = item.word;
-        const meta = document.createElement("span");
-        meta.className = "meta";
-        meta.textContent = item.tag;
-        li.append(name, meta);
+        const metaEl = document.createElement("span");
+        metaEl.className = "meta";
+        metaEl.textContent = item.tag;
+        li.append(name, metaEl);
         return li;
       })
     );
@@ -194,8 +268,9 @@
     resultEl.textContent = format(tokens, currentStyle());
     resultEl.classList.toggle("is-hidden", hidden);
 
+    const count = words.length.toLocaleString("pt-BR");
     if (!tokens.length) {
-      statusEl.textContent = `${words.length} palavras na lista`;
+      statusEl.textContent = `${count} palavras na lista`;
       statusEl.className = "status";
       return;
     }
@@ -236,6 +311,32 @@
     if (!suggestions.length) return false;
     accept(suggestions[selected].word);
     return true;
+  }
+
+  function setList(id) {
+    activeId = catalog[id] ? id : "all";
+    indexActive();
+    updateKicker();
+    selected = 0;
+    render();
+  }
+
+  function buildListPills() {
+    if (!meta.length) return;
+    listPills.replaceChildren(
+      ...meta.map((item, i) => {
+        const label = document.createElement("label");
+        label.className = "pill";
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = "wordlist";
+        input.value = item.id;
+        input.checked = item.id === "all" || (i === 0 && !meta.some((m) => m.id === "all"));
+        input.addEventListener("change", () => setList(item.id));
+        label.append(input, document.createTextNode(` ${item.label}`));
+        return label;
+      })
+    );
   }
 
   draftEl.addEventListener("input", () => {
@@ -328,11 +429,12 @@
     renderResult();
   });
 
-  if (!words.length) {
+  if (!all.length) {
     statusEl.textContent = "Lista de palavras não carregou (words.js).";
     statusEl.className = "status warn";
     return;
   }
 
-  render();
+  buildListPills();
+  setList("all");
 })();

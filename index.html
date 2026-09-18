@@ -13,13 +13,18 @@
 <body>
   <main class="wrap">
     <header class="mast">
-      <p class="kicker">lista EFF · 1.296 palavras · prefixo único de 3 letras</p>
+      <p class="kicker" id="kicker">todas as listas</p>
       <h1>Ajudante de passphrase</h1>
       <p class="lede">
         Digite o que conseguir ler da sua letra. As sugestões vêm só desta página.
         <strong>Tab</strong> completa. Nada é enviado, gravado ou medido.
       </p>
     </header>
+
+    <section class="lists" aria-labelledby="list-label">
+      <h2 id="list-label">Lista de palavras</h2>
+      <div class="pills" id="list-pills" role="radiogroup" aria-label="Lista"></div>
+    </section>
 
     <section class="composer" aria-labelledby="composer-label">
       <label id="composer-label" for="draft">Palavras</label>
@@ -83,11 +88,12 @@
     <details class="notes">
       <summary>Como usar e o que esta página não faz</summary>
       <ul>
-        <li>As 3 primeiras letras de cada palavra da lista EFF Short 2.0 são únicas. Se você só decifrar <code>hor</code>, a palavra é uma só.</li>
+        <li>Comece em <strong>Todas</strong> (união das listas). Se a palavra ainda não aparecer, ela não está nas listas embutidas — você pode mesmo assim digitar e copiar.</li>
+        <li>EFF Short 2 e BIP-39 têm prefixo único (3 ou 4 letras). Nas outras, o Tab completa a melhor sugestão.</li>
         <li>Erros de inglês próximos (1–2 letras) ainda aparecem nas sugestões.</li>
         <li>A passphrase vive só na memória desta aba. Fechar ou recarregar apaga tudo. Não há cookies, <code>localStorage</code>, analytics nem pedidos de rede.</li>
         <li>GitHub Pages só entrega estes arquivos estáticos. O que você digita não vai para o GitHub. Para zero rastro de IP no host, baixe a pasta e abra o <code>index.html</code> offline.</li>
-        <li>Lista: <a href="https://www.eff.org/deeplinks/2016/07/new-wordlists-random-passphrases">EFF Short Wordlist 2.0</a>, CC BY 3.0 US.</li>
+        <li>Listas: EFF Large / Short 1 / Short 2 (CC BY 3.0 US), BIP-39 EN/PT/ES/FR/IT, Diceware original, Beale, inglês comum (~10 mil).</li>
       </ul>
     </details>
   </main>

@@ -76,6 +76,7 @@ body {
 section { margin-bottom: 1.6rem; }
 
 label,
+.lists h2,
 .format h2,
 .output h2 {
   display: block;
