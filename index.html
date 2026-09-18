@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'none'; font-src 'none'; connect-src 'none'; form-action 'none'; base-uri 'none'; frame-ancestors 'none'">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="color-scheme" content="light dark">
+  <title>Ajudante de passphrase</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="wrap">
+    <header class="mast">
+      <p class="kicker">lista EFF · 1.296 palavras · prefixo único de 3 letras</p>
+      <h1>Ajudante de passphrase</h1>
+      <p class="lede">
+        Digite o que conseguir ler da sua letra. As sugestões vêm só desta página.
+        <strong>Tab</strong> completa. Nada é enviado, gravado ou medido.
+      </p>
+    </header>
+
+    <section class="composer" aria-labelledby="composer-label">
+      <label id="composer-label" for="draft">Palavras</label>
+      <textarea
+        id="draft"
+        rows="3"
+        autocomplete="off"
+        autocapitalize="off"
+        autocorrect="off"
+        spellcheck="false"
+        data-lpignore="true"
+        data-1p-ignore="true"
+        data-bwignore="true"
+        name="word-composer"
+        placeholder="comece a digitar a primeira palavra…"
+      ></textarea>
+
+      <div id="suggest" class="suggest" hidden>
+        <p class="suggest-hint" id="suggest-hint"></p>
+        <ul id="suggest-list" role="listbox" aria-label="Sugestões"></ul>
+      </div>
+
+      <p class="keys">
+        <kbd>Tab</kbd> ou <kbd>Enter</kbd> completa
+        · <kbd>↑</kbd><kbd>↓</kbd> escolhe
+        · <kbd>Esc</kbd> fecha
+        · <kbd>Ctrl</kbd>+<kbd>Enter</kbd> copia
+      </p>
+    </section>
+
+    <section class="format" aria-labelledby="format-label">
+      <h2 id="format-label">Formato da saída</h2>
+      <div class="pills" role="radiogroup" aria-label="Estilo">
+        <label class="pill"><input type="radio" name="style" value="lower-space" checked> espaços</label>
+        <label class="pill"><input type="radio" name="style" value="title"> Title Case</label>
+        <label class="pill"><input type="radio" name="style" value="sentence"> frase</label>
+        <label class="pill"><input type="radio" name="style" value="camel"> camelCase</label>
+        <label class="pill"><input type="radio" name="style" value="pascal"> PascalCase</label>
+        <label class="pill"><input type="radio" name="style" value="snake"> snake_case</label>
+        <label class="pill"><input type="radio" name="style" value="kebab"> kebab-case</label>
+        <label class="pill"><input type="radio" name="style" value="scream"> SCREAMING_SNAKE</label>
+        <label class="pill"><input type="radio" name="style" value="upper-space"> MAIÚSCULAS</label>
+        <label class="pill"><input type="radio" name="style" value="none"> colado</label>
+      </div>
+    </section>
+
+    <section class="output" aria-labelledby="out-label">
+      <div class="out-head">
+        <h2 id="out-label">Saída</h2>
+        <p id="status" class="status"></p>
+      </div>
+      <pre id="result" class="result" aria-live="polite"></pre>
+      <div class="actions">
+        <button type="button" id="copy" class="btn primary">Copiar</button>
+        <button type="button" id="clear" class="btn">Limpar</button>
+        <button type="button" id="hide" class="btn" aria-pressed="false">Ocultar saída</button>
+      </div>
+      <p id="copy-note" class="copy-note" hidden></p>
+    </section>
+
+    <details class="notes">
+      <summary>Como usar e o que esta página não faz</summary>
+      <ul>
+        <li>As 3 primeiras letras de cada palavra da lista EFF Short 2.0 são únicas. Se você só decifrar <code>hor</code>, a palavra é uma só.</li>
+        <li>Erros de inglês próximos (1–2 letras) ainda aparecem nas sugestões.</li>
+        <li>A passphrase vive só na memória desta aba. Fechar ou recarregar apaga tudo. Não há cookies, <code>localStorage</code>, analytics nem pedidos de rede.</li>
+        <li>GitHub Pages só entrega estes arquivos estáticos. O que você digita não vai para o GitHub. Para zero rastro de IP no host, baixe a pasta e abra o <code>index.html</code> offline.</li>
+        <li>Lista: <a href="https://www.eff.org/deeplinks/2016/07/new-wordlists-random-passphrases">EFF Short Wordlist 2.0</a>, CC BY 3.0 US.</li>
+      </ul>
+    </details>
+  </main>
+  <script src="words.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
