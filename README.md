@@ -4,6 +4,17 @@ Página **estática**. Não há banco de dados, API nem servidor próprio:
 as listas oficiais de passphrase vão no arquivo `words.js` e o
 autocomplete roda só no navegador.
 
+## Segredo ↔ palavras (BIP-39)
+
+Um segredo opaco (hex, base64 ou texto — até 28 bytes; um client secret
+do GitHub são 40 hex = 18 palavras) vira palavras da lista BIP-39
+inglesa, escolhidas pela Bitcoin justamente para serem legíveis e
+distintas à mão (prefixo único de 4 letras). O caminho de volta
+reconstrói o segredo byte a byte; o checksum do BIP-39 acusa na hora
+palavra trocada ou escrita errada. O codec (`bip39.js`) implementa
+SHA-256 e o BIP-39 em JS puro — funciona offline via `file://` — e é
+coberto por vetores oficiais (`test/bip39-cases.cjs`).
+
 ## De onde vêm as palavras
 
 O seletor abre na **EFF Large** (Bitwarden / KeePassXC, 7.776 palavras).

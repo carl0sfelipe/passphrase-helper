@@ -157,6 +157,17 @@ label,
   align-self: center;
 }
 
+.ghost-add {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.format-warn {
+  margin: 0 0 0.55rem;
+  color: var(--warn);
+  font-size: 0.92rem;
+}
+
 .keys {
   margin: 0.55rem 0 0;
   color: var(--muted);
@@ -258,6 +269,7 @@ kbd {
   font-size: 1.15rem;
   white-space: pre-wrap;
   word-break: break-word;
+  cursor: pointer;
 }
 
 .result.is-hidden {
@@ -311,4 +323,28 @@ kbd {
 code {
   font-family: ui-monospace, "Cascadia Mono", "IBM Plex Mono", monospace;
   font-size: 0.88em;
+}
+
+/* --- Segredo ↔ palavras (BIP-39) --- */
+
+.secret-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  gap: 1rem 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.secret-grid label {
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.secret textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.secret .result {
+  min-height: 2.2rem;
+  white-space: pre-wrap;
 }

@@ -16,9 +16,8 @@
       <p class="kicker" id="kicker">todas as listas</p>
       <h1>Ajudante de passphrase</h1>
       <p class="lede">
-        Digite o que conseguir ler. O que você escreveu (maiúscula/minúscula) não se altera.
-        <strong>Tab</strong> só completa. Se não houver opção, corrige typo de 1–2 letras e ainda respeita o seu case.
-        Nada é enviado, gravado ou medido.
+        Digite o que conseguir ler. O que você escreveu é lei: maiúscula não vira minúscula no Tab nem no Copiar.
+        Sem opção na lista, corrige typo de 1–2 letras e pinta o seu case. Nada é enviado, gravado ou medido.
       </p>
     </header>
 
@@ -51,9 +50,10 @@
 
       <p class="keys">
         <kbd>Tab</kbd> ou <kbd>Enter</kbd> completa
+        · <kbd>Shift</kbd>+<kbd>Tab</kbd> desfaz
+        · <kbd>Espaço</kbd> fecha prefixo único
         · <kbd>↑</kbd><kbd>↓</kbd> escolhe
-        · <kbd>Esc</kbd> fecha
-        · <kbd>Ctrl</kbd>+<kbd>Enter</kbd> copia
+        · clique na saída copia exatamente
       </p>
     </section>
 
@@ -81,6 +81,7 @@
       </div>
       <p id="list-hit" class="list-hit" hidden></p>
       <button type="button" id="use-list" class="btn" hidden>Usar só esta lista</button>
+      <p id="format-warn" class="format-warn" hidden></p>
       <pre id="result" class="result" aria-live="polite"></pre>
       <div class="actions">
         <button type="button" id="copy" class="btn primary">Copiar</button>
@@ -90,21 +91,61 @@
       <p id="copy-note" class="copy-note" hidden></p>
     </section>
 
+    <section class="secret" aria-labelledby="secret-label">
+      <h2 id="secret-label">Segredo ↔ palavras (BIP-39)</h2>
+      <p class="list-note">
+        Transforme um segredo opaco (hex, base64 ou texto — até 28 bytes; um client secret
+        do GitHub são 40 hex = 18 palavras) em palavras da lista BIP-39 inglês, escolhidas
+        para darem bem de escrever à mão. O caminho de volta reconstrói byte a byte e o
+        checksum acusa palavra trocada ou errada. Nada sai da página.
+      </p>
+      <div class="secret-grid">
+        <div>
+          <label for="secret-in">Segredo (hex, base64 ou texto)</label>
+          <textarea id="secret-in" rows="2" autocomplete="off" autocapitalize="off"
+            autocorrect="off" spellcheck="false" data-1p-ignore="true" data-lpignore="true"
+            placeholder="cole aqui (hex, base64 ou texto)…"></textarea>
+          <div class="actions">
+            <button type="button" id="secret-encode" class="btn primary">→ palavras</button>
+            <button type="button" id="copy-words" class="btn">Copiar palavras</button>
+          </div>
+          <pre id="secret-words" class="result" aria-live="polite"></pre>
+        </div>
+        <div>
+          <label for="words-in">Palavras BIP-39</label>
+          <textarea id="words-in" rows="2" autocomplete="off" autocapitalize="off"
+            autocorrect="off" spellcheck="false" data-1p-ignore="true" data-lpignore="true"
+            placeholder="digite ou cole as palavras…"></textarea>
+          <div class="actions">
+            <button type="button" id="secret-decode" class="btn primary">→ segredo</button>
+            <button type="button" id="copy-secret" class="btn">Copiar segredo</button>
+          </div>
+          <pre id="secret-out" class="result" aria-live="polite"></pre>
+        </div>
+      </div>
+      <p id="secret-status" class="status"></p>
+    </section>
+
     <details class="notes">
       <summary>Como usar e o que esta página não faz</summary>
       <ul>
         <li>Não existe servidor nem banco: <code>words.js</code> já traz as listas. Depois do carregamento a página não faz pedido de rede.</li>
         <li>O que você digitou é lei: Tab não passa a palavra para minúsculas. Só acrescenta o resto, no mesmo padrão de case.</li>
         <li>Se não houver opção na lista, a busca por typo (1–2 letras, inclusive letras trocadas) sugere a palavra certa e o Tab aplica o seu case nela.</li>
-        <li>A saída padrão é <strong>como digitado</strong>. CamelCase e os outros formatos só mudam a cópia se você escolher.</li>
+        <li>A saída padrão é <strong>como digitado</strong>. Copiar cola exatamente o texto da saída, com as maiúsculas. CamelCase e os outros formatos só mudam a cópia se você escolher — e a página avisa se o formato for destruir o case.</li>
+        <li><kbd>Shift</kbd>+<kbd>Tab</kbd> desfaz a última completação. <kbd>Espaço</kbd> aceita um prefixo único (3 letras na EFF Large). Tab sem sugestão não prende o teclado.</li>
         <li>O padrão da lista é a <strong>EFF Large</strong>. As 3 primeiras letras já identificam cada palavra.</li>
         <li>Se uma palavra só existe numa lista (ex.: ritalin → EFF Large), a página avisa e você pode filtrar só nela.</li>
         <li>A passphrase vive só na memória desta aba. Sem cookies, <code>localStorage</code> ou analytics.</li>
+        <li>O conversor <strong>Segredo ↔ palavras</strong> usa a lista BIP-39 com prefixo único de 4 letras e checksum: segredos de até 28 bytes viram 12–24 palavras, e uma palavra trocada na transcrição é acusada na volta. A conversão é matemática local — nada é enviado.</li>
         <li>GitHub Pages só entrega os arquivos. Para zero rastro de IP, baixe a pasta e abra o <code>index.html</code> offline.</li>
       </ul>
     </details>
   </main>
   <script src="words.js?v=3"></script>
-  <script src="app.js?v=7"></script>
+  <script src="core.js?v=8"></script>
+  <script src="app.js?v=8"></script>
+  <script src="bip39.js?v=1"></script>
+  <script src="secret.js?v=1"></script>
 </body>
 </html>

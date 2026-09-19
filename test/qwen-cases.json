@@ -1,0 +1,3303 @@
+{
+  "tests": [
+    {
+      "id": "cp-01",
+      "fn": "completePreserving",
+      "args": [
+        "Rit",
+        "ritalin"
+      ],
+      "expected": "Ritalin",
+      "why": "prefixo misto: o prefixo digitado fica e o resto entra minúsculo"
+    },
+    {
+      "id": "cp-02",
+      "fn": "completePreserving",
+      "args": [
+        "RIT",
+        "ritalin"
+      ],
+      "expected": "RITALIN",
+      "why": "prefixo todo maiúsculo pinta o resto maiúsculo"
+    },
+    {
+      "id": "cp-03",
+      "fn": "completePreserving",
+      "args": [
+        "rit",
+        "ritalin"
+      ],
+      "expected": "ritalin",
+      "why": "prefixo minúsculo permanece minúsculo"
+    },
+    {
+      "id": "cp-04",
+      "fn": "completePreserving",
+      "args": [
+        "Ritalin",
+        "ritalin"
+      ],
+      "expected": "Ritalin",
+      "why": "palavra exata: o que o usuário escreveu é lei"
+    },
+    {
+      "id": "cp-05",
+      "fn": "completePreserving",
+      "args": [
+        "RITALIN",
+        "ritalin"
+      ],
+      "expected": "RITALIN",
+      "why": "exata em caixa alta não desce"
+    },
+    {
+      "id": "cp-06",
+      "fn": "completePreserving",
+      "args": [
+        "RiTaLiN",
+        "ritalin"
+      ],
+      "expected": "RiTaLiN",
+      "why": "exata zebra-case não é normalizada"
+    },
+    {
+      "id": "cp-07",
+      "fn": "completePreserving",
+      "args": [
+        "RiT",
+        "ritalin"
+      ],
+      "expected": "RiTalin",
+      "why": "três letras mistas: só o resto entra minúsculo"
+    },
+    {
+      "id": "cp-08",
+      "fn": "completePreserving",
+      "args": [
+        "HORSE",
+        "horse"
+      ],
+      "expected": "HORSE",
+      "why": "exata HORSE não desce"
+    },
+    {
+      "id": "cp-09",
+      "fn": "completePreserving",
+      "args": [
+        "Hor",
+        "horse"
+      ],
+      "expected": "Horse",
+      "why": "prefixo title fica e o resto entra minúsculo"
+    },
+    {
+      "id": "cp-10",
+      "fn": "completePreserving",
+      "args": [
+        "hOR",
+        "horse"
+      ],
+      "expected": "hORse",
+      "why": "meio da palavra em maiúscula fica intacto"
+    },
+    {
+      "id": "cp-11",
+      "fn": "completePreserving",
+      "args": [
+        "Ritalim",
+        "ritalin"
+      ],
+      "expected": "Ritalin",
+      "why": "não-prefixo cai em paintCase e pinta a certa"
+    },
+    {
+      "id": "cp-12",
+      "fn": "completePreserving",
+      "args": [
+        "HORZE",
+        "horse"
+      ],
+      "expected": "HORSE",
+      "why": "typo all-caps pinta a palavra certa em caps"
+    },
+    {
+      "id": "cp-13",
+      "fn": "completePreserving",
+      "args": [
+        "Hrose",
+        "horse"
+      ],
+      "expected": "Horse",
+      "why": "transposição pinta H e o resto minúsculo"
+    },
+    {
+      "id": "cp-14",
+      "fn": "completePreserving",
+      "args": [
+        "i",
+        "ice"
+      ],
+      "expected": "ice",
+      "why": "uma letra minúscula completa em minúsculo"
+    },
+    {
+      "id": "cp-15",
+      "fn": "completePreserving",
+      "args": [
+        "I",
+        "ice"
+      ],
+      "expected": "ICE",
+      "why": "uma letra maiúscula pinta o resto em caps"
+    },
+    {
+      "id": "cp-16",
+      "fn": "completePreserving",
+      "args": [
+        "Ice",
+        "ice"
+      ],
+      "expected": "Ice",
+      "why": "exata Ice não é alterada"
+    },
+    {
+      "id": "cp-17",
+      "fn": "completePreserving",
+      "args": [
+        "",
+        "horse"
+      ],
+      "expected": "horse",
+      "why": "typed vazio devolve a palavra do dicionário"
+    },
+    {
+      "id": "cp-18",
+      "fn": "completePreserving",
+      "args": [
+        "Mc",
+        "ice"
+      ],
+      "expected": "Ice",
+      "why": "não-prefixo Mc pinta a certa com M maiúsculo"
+    },
+    {
+      "id": "cp-19",
+      "fn": "completePreserving",
+      "args": [
+        "iP",
+        "item"
+      ],
+      "expected": "iTem",
+      "why": "não-prefixo iP pinta iTem letra a letra"
+    },
+    {
+      "id": "cp-20",
+      "fn": "completePreserving",
+      "args": [
+        "Cor",
+        "correct"
+      ],
+      "expected": "Correct",
+      "why": "Cor completa para Correct"
+    },
+    {
+      "id": "cp-21",
+      "fn": "completePreserving",
+      "args": [
+        "COR",
+        "correct"
+      ],
+      "expected": "CORRECT",
+      "why": "COR completa para CORRECT"
+    },
+    {
+      "id": "cp-22",
+      "fn": "completePreserving",
+      "args": [
+        "App",
+        "apple"
+      ],
+      "expected": "Apple",
+      "why": "App completa para Apple"
+    },
+    {
+      "id": "cp-23",
+      "fn": "completePreserving",
+      "args": [
+        "APP",
+        "apply"
+      ],
+      "expected": "APPLY",
+      "why": "APP completa para APPLY"
+    },
+    {
+      "id": "cp-24",
+      "fn": "completePreserving",
+      "args": [
+        "Aard",
+        "aardvark"
+      ],
+      "expected": "Aardvark",
+      "why": "Aard completa para Aardvark"
+    },
+    {
+      "id": "cp-25",
+      "fn": "completePreserving",
+      "args": [
+        "AARD",
+        "aardvark"
+      ],
+      "expected": "AARDVARK",
+      "why": "AARD completa para AARDVARK"
+    },
+    {
+      "id": "cp-26",
+      "fn": "completePreserving",
+      "args": [
+        "yel",
+        "yellow"
+      ],
+      "expected": "yellow",
+      "why": "yel completa para yellow"
+    },
+    {
+      "id": "cp-27",
+      "fn": "completePreserving",
+      "args": [
+        "YEL",
+        "yellow"
+      ],
+      "expected": "YELLOW",
+      "why": "YEL completa para YELLOW"
+    },
+    {
+      "id": "cp-28",
+      "fn": "completePreserving",
+      "args": [
+        "Ele",
+        "elephant"
+      ],
+      "expected": "Elephant",
+      "why": "Ele completa para Elephant"
+    },
+    {
+      "id": "cp-29",
+      "fn": "completePreserving",
+      "args": [
+        "ELE",
+        "elephant"
+      ],
+      "expected": "ELEPHANT",
+      "why": "ELE completa para ELEPHANT"
+    },
+    {
+      "id": "cp-30",
+      "fn": "completePreserving",
+      "args": [
+        "Ele",
+        "eleven"
+      ],
+      "expected": "Eleven",
+      "why": "Ele completa para Eleven"
+    },
+    {
+      "id": "cp-31",
+      "fn": "completePreserving",
+      "args": [
+        "Sta",
+        "staple"
+      ],
+      "expected": "Staple",
+      "why": "Sta completa para Staple"
+    },
+    {
+      "id": "cp-32",
+      "fn": "completePreserving",
+      "args": [
+        "STA",
+        "staple"
+      ],
+      "expected": "STAPLE",
+      "why": "STA completa para STAPLE"
+    },
+    {
+      "id": "cp-33",
+      "fn": "completePreserving",
+      "args": [
+        "Or",
+        "orange"
+      ],
+      "expected": "Orange",
+      "why": "Or completa para Orange"
+    },
+    {
+      "id": "cp-34",
+      "fn": "completePreserving",
+      "args": [
+        "OR",
+        "orange"
+      ],
+      "expected": "ORANGE",
+      "why": "OR completa para ORANGE"
+    },
+    {
+      "id": "cp-35",
+      "fn": "completePreserving",
+      "args": [
+        "Bat",
+        "battery"
+      ],
+      "expected": "Battery",
+      "why": "Bat completa para Battery"
+    },
+    {
+      "id": "cp-36",
+      "fn": "completePreserving",
+      "args": [
+        "BAT",
+        "battery"
+      ],
+      "expected": "BATTERY",
+      "why": "BAT completa para BATTERY"
+    },
+    {
+      "id": "cp-37",
+      "fn": "completePreserving",
+      "args": [
+        "Ab",
+        "able"
+      ],
+      "expected": "Able",
+      "why": "Ab completa para Able"
+    },
+    {
+      "id": "cp-38",
+      "fn": "completePreserving",
+      "args": [
+        "AB",
+        "able"
+      ],
+      "expected": "ABLE",
+      "why": "AB completa para ABLE"
+    },
+    {
+      "id": "cp-39",
+      "fn": "completePreserving",
+      "args": [
+        "Ab",
+        "about"
+      ],
+      "expected": "About",
+      "why": "Ab completa para About"
+    },
+    {
+      "id": "cp-40",
+      "fn": "completePreserving",
+      "args": [
+        "Z",
+        "zebra"
+      ],
+      "expected": "ZEBRA",
+      "why": "Z maiúscula pinta o resto em caps"
+    },
+    {
+      "id": "cp-41",
+      "fn": "completePreserving",
+      "args": [
+        "z",
+        "zebra"
+      ],
+      "expected": "zebra",
+      "why": "z minúscula completa em minúsculo"
+    },
+    {
+      "id": "cp-42",
+      "fn": "completePreserving",
+      "args": [
+        "Ze",
+        "zebra"
+      ],
+      "expected": "Zebra",
+      "why": "Ze completa para Zebra"
+    },
+    {
+      "id": "cp-43",
+      "fn": "completePreserving",
+      "args": [
+        "aard",
+        "aardvark"
+      ],
+      "expected": "aardvark",
+      "why": "aard completa em minúsculo"
+    },
+    {
+      "id": "cp-44",
+      "fn": "completePreserving",
+      "args": [
+        "a",
+        "aardvark"
+      ],
+      "expected": "aardvark",
+      "why": "a minúscula completa em minúsculo"
+    },
+    {
+      "id": "cp-45",
+      "fn": "completePreserving",
+      "args": [
+        "A",
+        "aardvark"
+      ],
+      "expected": "AARDVARK",
+      "why": "A maiúscula pinta o resto em caps"
+    },
+    {
+      "id": "cp-46",
+      "fn": "completePreserving",
+      "args": [
+        "it",
+        "item"
+      ],
+      "expected": "item",
+      "why": "it completa para item"
+    },
+    {
+      "id": "cp-47",
+      "fn": "completePreserving",
+      "args": [
+        "It",
+        "item"
+      ],
+      "expected": "Item",
+      "why": "It completa para Item"
+    },
+    {
+      "id": "cp-48",
+      "fn": "completePreserving",
+      "args": [
+        "IT",
+        "item"
+      ],
+      "expected": "ITEM",
+      "why": "IT completa para ITEM"
+    },
+    {
+      "id": "pc-01",
+      "fn": "paintCase",
+      "args": [
+        "Ritalim",
+        "ritalin"
+      ],
+      "expected": "Ritalin",
+      "why": "typo: pinta a certa com o case digitado"
+    },
+    {
+      "id": "pc-02",
+      "fn": "paintCase",
+      "args": [
+        "RITALIM",
+        "ritalin"
+      ],
+      "expected": "RITALIN",
+      "why": "typo all-caps pinta tudo em caps"
+    },
+    {
+      "id": "pc-03",
+      "fn": "paintCase",
+      "args": [
+        "ritalim",
+        "ritalin"
+      ],
+      "expected": "ritalin",
+      "why": "typo all-lower pinta tudo em minúsculo"
+    },
+    {
+      "id": "pc-04",
+      "fn": "paintCase",
+      "args": [
+        "RiTaLim",
+        "ritalin"
+      ],
+      "expected": "RiTaLin",
+      "why": "typo zebra pinta letra a letra"
+    },
+    {
+      "id": "pc-05",
+      "fn": "paintCase",
+      "args": [
+        "ABC",
+        "horse"
+      ],
+      "expected": "HORSE",
+      "why": "flags todas U vira a palavra em caps"
+    },
+    {
+      "id": "pc-06",
+      "fn": "paintCase",
+      "args": [
+        "",
+        "ritalin"
+      ],
+      "expected": "ritalin",
+      "why": "sem letras devolve o dicionário"
+    },
+    {
+      "id": "pc-07",
+      "fn": "paintCase",
+      "args": [
+        "123",
+        "ritalin"
+      ],
+      "expected": "ritalin",
+      "why": "só dígitos não geram flags"
+    },
+    {
+      "id": "pc-08",
+      "fn": "paintCase",
+      "args": [
+        "Ho",
+        "horse"
+      ],
+      "expected": "Horse",
+      "why": "Ho pinta Horse"
+    },
+    {
+      "id": "pc-09",
+      "fn": "paintCase",
+      "args": [
+        "HO",
+        "horse"
+      ],
+      "expected": "HORSE",
+      "why": "HO pinta HORSE"
+    },
+    {
+      "id": "pc-10",
+      "fn": "paintCase",
+      "args": [
+        "ho",
+        "horse"
+      ],
+      "expected": "horse",
+      "why": "ho pinta horse"
+    },
+    {
+      "id": "pc-11",
+      "fn": "paintCase",
+      "args": [
+        "Hh",
+        "horse"
+      ],
+      "expected": "Horse",
+      "why": "Hh pinta Horse"
+    },
+    {
+      "id": "pc-12",
+      "fn": "paintCase",
+      "args": [
+        "hH",
+        "horse"
+      ],
+      "expected": "hOrse",
+      "why": "hH pinta hOrse letra a letra"
+    },
+    {
+      "id": "pc-13",
+      "fn": "paintCase",
+      "args": [
+        "Ri",
+        "ritalin"
+      ],
+      "expected": "Ritalin",
+      "why": "Ri pinta Ritalin"
+    },
+    {
+      "id": "pc-14",
+      "fn": "paintCase",
+      "args": [
+        "RI",
+        "ritalin"
+      ],
+      "expected": "RITALIN",
+      "why": "RI pinta RITALIN"
+    },
+    {
+      "id": "pc-15",
+      "fn": "paintCase",
+      "args": [
+        "ri",
+        "ritalin"
+      ],
+      "expected": "ritalin",
+      "why": "ri pinta ritalin"
+    },
+    {
+      "id": "pc-16",
+      "fn": "paintCase",
+      "args": [
+        "St",
+        "staple"
+      ],
+      "expected": "Staple",
+      "why": "St pinta Staple"
+    },
+    {
+      "id": "pc-17",
+      "fn": "paintCase",
+      "args": [
+        "ST",
+        "staple"
+      ],
+      "expected": "STAPLE",
+      "why": "ST pinta STAPLE"
+    },
+    {
+      "id": "pc-18",
+      "fn": "paintCase",
+      "args": [
+        "st",
+        "staple"
+      ],
+      "expected": "staple",
+      "why": "st pinta staple"
+    },
+    {
+      "id": "pc-19",
+      "fn": "paintCase",
+      "args": [
+        "Or",
+        "orange"
+      ],
+      "expected": "Orange",
+      "why": "Or pinta Orange"
+    },
+    {
+      "id": "pc-20",
+      "fn": "paintCase",
+      "args": [
+        "OR",
+        "orange"
+      ],
+      "expected": "ORANGE",
+      "why": "OR pinta ORANGE"
+    },
+    {
+      "id": "pc-21",
+      "fn": "paintCase",
+      "args": [
+        "or",
+        "orange"
+      ],
+      "expected": "orange",
+      "why": "or pinta orange"
+    },
+    {
+      "id": "pc-22",
+      "fn": "paintCase",
+      "args": [
+        "B",
+        "battery"
+      ],
+      "expected": "BATTERY",
+      "why": "B pinta Battery"
+    },
+    {
+      "id": "pc-23",
+      "fn": "paintCase",
+      "args": [
+        "b",
+        "battery"
+      ],
+      "expected": "battery",
+      "why": "b pinta battery"
+    },
+    {
+      "id": "pc-24",
+      "fn": "paintCase",
+      "args": [
+        "El",
+        "elephant"
+      ],
+      "expected": "Elephant",
+      "why": "El pinta Elephant"
+    },
+    {
+      "id": "pc-25",
+      "fn": "paintCase",
+      "args": [
+        "EL",
+        "elephant"
+      ],
+      "expected": "ELEPHANT",
+      "why": "EL pinta ELEPHANT"
+    },
+    {
+      "id": "pc-26",
+      "fn": "paintCase",
+      "args": [
+        "el",
+        "elephant"
+      ],
+      "expected": "elephant",
+      "why": "el pinta elephant"
+    },
+    {
+      "id": "pc-27",
+      "fn": "paintCase",
+      "args": [
+        "Ap",
+        "apple"
+      ],
+      "expected": "Apple",
+      "why": "Ap pinta Apple"
+    },
+    {
+      "id": "pc-28",
+      "fn": "paintCase",
+      "args": [
+        "AP",
+        "apple"
+      ],
+      "expected": "APPLE",
+      "why": "AP pinta APPLE"
+    },
+    {
+      "id": "pc-29",
+      "fn": "paintCase",
+      "args": [
+        "ap",
+        "apple"
+      ],
+      "expected": "apple",
+      "why": "ap pinta apple"
+    },
+    {
+      "id": "pc-30",
+      "fn": "paintCase",
+      "args": [
+        "Z",
+        "zebra"
+      ],
+      "expected": "ZEBRA",
+      "why": "Z pinta Zebra"
+    },
+    {
+      "id": "pc-31",
+      "fn": "paintCase",
+      "args": [
+        "z",
+        "zebra"
+      ],
+      "expected": "zebra",
+      "why": "z pinta zebra"
+    },
+    {
+      "id": "pc-32",
+      "fn": "paintCase",
+      "args": [
+        "Aa",
+        "aardvark"
+      ],
+      "expected": "Aardvark",
+      "why": "Aa pinta Aardvark"
+    },
+    {
+      "id": "pc-33",
+      "fn": "paintCase",
+      "args": [
+        "AA",
+        "aardvark"
+      ],
+      "expected": "AARDVARK",
+      "why": "AA pinta AARDVARK"
+    },
+    {
+      "id": "pc-34",
+      "fn": "paintCase",
+      "args": [
+        "aa",
+        "aardvark"
+      ],
+      "expected": "aardvark",
+      "why": "aa pinta aardvark"
+    },
+    {
+      "id": "pc-35",
+      "fn": "paintCase",
+      "args": [
+        "It",
+        "item"
+      ],
+      "expected": "Item",
+      "why": "It pinta Item"
+    },
+    {
+      "id": "pc-36",
+      "fn": "paintCase",
+      "args": [
+        "IT",
+        "item"
+      ],
+      "expected": "ITEM",
+      "why": "IT pinta ITEM"
+    },
+    {
+      "id": "pc-37",
+      "fn": "paintCase",
+      "args": [
+        "it",
+        "item"
+      ],
+      "expected": "item",
+      "why": "it pinta item"
+    },
+    {
+      "id": "pc-38",
+      "fn": "paintCase",
+      "args": [
+        "Ic",
+        "ice"
+      ],
+      "expected": "Ice",
+      "why": "Ic pinta Ice"
+    },
+    {
+      "id": "pc-39",
+      "fn": "paintCase",
+      "args": [
+        "IC",
+        "ice"
+      ],
+      "expected": "ICE",
+      "why": "IC pinta ICE"
+    },
+    {
+      "id": "pc-40",
+      "fn": "paintCase",
+      "args": [
+        "ic",
+        "ice"
+      ],
+      "expected": "ice",
+      "why": "ic pinta ice"
+    },
+    {
+      "id": "pc-41",
+      "fn": "paintCase",
+      "args": [
+        "Ab",
+        "able"
+      ],
+      "expected": "Able",
+      "why": "Ab pinta Able"
+    },
+    {
+      "id": "pc-42",
+      "fn": "paintCase",
+      "args": [
+        "AB",
+        "able"
+      ],
+      "expected": "ABLE",
+      "why": "AB pinta ABLE"
+    },
+    {
+      "id": "pc-43",
+      "fn": "paintCase",
+      "args": [
+        "ab",
+        "able"
+      ],
+      "expected": "able",
+      "why": "ab pinta able"
+    },
+    {
+      "id": "pc-44",
+      "fn": "paintCase",
+      "args": [
+        "Ab",
+        "about"
+      ],
+      "expected": "About",
+      "why": "Ab pinta About"
+    },
+    {
+      "id": "pc-45",
+      "fn": "paintCase",
+      "args": [
+        "AB",
+        "about"
+      ],
+      "expected": "ABOUT",
+      "why": "AB pinta ABOUT"
+    },
+    {
+      "id": "pc-46",
+      "fn": "paintCase",
+      "args": [
+        "ab",
+        "about"
+      ],
+      "expected": "about",
+      "why": "ab pinta about"
+    },
+    {
+      "id": "pc-47",
+      "fn": "paintCase",
+      "args": [
+        "RiTa",
+        "ritalin"
+      ],
+      "expected": "RiTalin",
+      "why": "RiTa pinta RiTaLin letra a letra"
+    },
+    {
+      "id": "pc-48",
+      "fn": "paintCase",
+      "args": [
+        "HoRs",
+        "horse"
+      ],
+      "expected": "HoRse",
+      "why": "HoRs pinta HoRse letra a letra"
+    },
+    {
+      "id": "pc-49",
+      "fn": "paintCase",
+      "args": [
+        "12",
+        "ritalin"
+      ],
+      "expected": "ritalin",
+      "why": "dígitos não geram flags e devolve o dicionário"
+    },
+    {
+      "id": "pc-50",
+      "fn": "paintCase",
+      "args": [
+        "RiTaLi",
+        "ritalin"
+      ],
+      "expected": "RiTaLin",
+      "why": "RiTaLi pinta RiTaLin letra a letra"
+    },
+    {
+      "id": "fm-01",
+      "fn": "format",
+      "args": [
+        [
+          "Ritalin"
+        ],
+        "as-typed"
+      ],
+      "expected": "Ritalin",
+      "why": "format as-typed de um token"
+    },
+    {
+      "id": "fm-02",
+      "fn": "format",
+      "args": [
+        [
+          "Ritalin",
+          "Horse"
+        ],
+        "as-typed"
+      ],
+      "expected": "Ritalin Horse",
+      "why": "as-typed junta com espaço e mantém case"
+    },
+    {
+      "id": "fm-03",
+      "fn": "format",
+      "args": [
+        [
+          "Ritalin",
+          "Horse"
+        ],
+        "lower-space"
+      ],
+      "expected": "ritalin horse",
+      "why": "lower-space baixa tudo"
+    },
+    {
+      "id": "fm-04",
+      "fn": "format",
+      "args": [
+        [
+          "Ritalin",
+          "Horse"
+        ],
+        "title"
+      ],
+      "expected": "Ritalin Horse",
+      "why": "title capitaliza cada token"
+    },
+    {
+      "id": "fm-05",
+      "fn": "format",
+      "args": [
+        [
+          "Ritalin",
+          "Horse"
+        ],
+        "sentence"
+      ],
+      "expected": "Ritalin horse",
+      "why": "sentence capitaliza só o primeiro"
+    },
+    {
+      "id": "fm-06",
+      "fn": "format",
+      "args": [
+        [
+          "Ritalin",
+          "Horse"
+        ],
+        "camel"
+      ],
+      "expected": "ritalinHorse",
+      "why": "camel baixa o primeiro e capitaliza o resto"
+    },
+    {
+      "id": "fm-07",
+      "fn": "format",
+      "args": [
+        [
+          "Ritalin",
+          "Horse"
+        ],
+        "pascal"
+      ],
+      "expected": "RitalinHorse",
+      "why": "pascal capitaliza e cola"
+    },
+    {
+      "id": "fm-08",
+      "fn": "format",
+      "args": [
+        [
+          "Ritalin",
+          "Horse"
+        ],
+        "snake"
+      ],
+      "expected": "ritalin_horse",
+      "why": "snake baixa e junta com underline"
+    },
+    {
+      "id": "fm-09",
+      "fn": "format",
+      "args": [
+        [
+          "Ritalin",
+          "Horse"
+        ],
+        "kebab"
+      ],
+      "expected": "ritalin-horse",
+      "why": "kebab baixa e junta com hífen"
+    },
+    {
+      "id": "fm-10",
+      "fn": "format",
+      "args": [
+        [
+          "Ritalin",
+          "Horse"
+        ],
+        "scream"
+      ],
+      "expected": "RITALIN_HORSE",
+      "why": "scream manda tudo em caps com underline"
+    },
+    {
+      "id": "fm-11",
+      "fn": "format",
+      "args": [
+        [
+          "Ritalin",
+          "Horse"
+        ],
+        "upper-space"
+      ],
+      "expected": "RITALIN HORSE",
+      "why": "upper-space manda tudo em caps com espaço"
+    },
+    {
+      "id": "fm-12",
+      "fn": "format",
+      "args": [
+        [
+          "Ritalin",
+          "Horse"
+        ],
+        "none"
+      ],
+      "expected": "ritalinhorse",
+      "why": "none baixa e cola sem separador"
+    },
+    {
+      "id": "fm-13",
+      "fn": "format",
+      "args": [
+        [
+          "Ritalin",
+          "Horse"
+        ],
+        "estilo-inventado"
+      ],
+      "expected": "Ritalin Horse",
+      "why": "estilo desconhecido NÃO lowercasa e junta como digitado"
+    },
+    {
+      "id": "fm-14",
+      "fn": "format",
+      "args": [
+        [],
+        "as-typed"
+      ],
+      "expected": "",
+      "why": "lista vazia devolve string vazia"
+    },
+    {
+      "id": "fm-15",
+      "fn": "format",
+      "args": [
+        [
+          "Ritalin",
+          "Horse",
+          "Staple"
+        ],
+        "camel"
+      ],
+      "expected": "ritalinHorseStaple",
+      "why": "camel de três palavras"
+    },
+    {
+      "id": "fm-16",
+      "fn": "format",
+      "args": [
+        [
+          "Ritalin",
+          "Horse",
+          "Staple"
+        ],
+        "pascal"
+      ],
+      "expected": "RitalinHorseStaple",
+      "why": "pascal de três palavras"
+    },
+    {
+      "id": "fm-17",
+      "fn": "format",
+      "args": [
+        [
+          "Correct",
+          "Battery",
+          "Staple"
+        ],
+        "camel"
+      ],
+      "expected": "correctBatteryStaple",
+      "why": "camel do clássico em title"
+    },
+    {
+      "id": "fm-18",
+      "fn": "format",
+      "args": [
+        [
+          "Correct",
+          "Battery",
+          "Staple"
+        ],
+        "as-typed"
+      ],
+      "expected": "Correct Battery Staple",
+      "why": "as-typed de três em title"
+    },
+    {
+      "id": "fm-19",
+      "fn": "format",
+      "args": [
+        [
+          "Apple"
+        ],
+        "sentence"
+      ],
+      "expected": "Apple",
+      "why": "sentence de uma palavra"
+    },
+    {
+      "id": "fm-20",
+      "fn": "format",
+      "args": [
+        [
+          "apple",
+          "HORSE"
+        ],
+        "sentence"
+      ],
+      "expected": "Apple horse",
+      "why": "sentence baixa o resto"
+    },
+    {
+      "id": "fm-21",
+      "fn": "format",
+      "args": [
+        [
+          "Apple",
+          "HORSE"
+        ],
+        "sentence"
+      ],
+      "expected": "Apple horse",
+      "why": "sentence usa lower do resto"
+    },
+    {
+      "id": "fm-22",
+      "fn": "format",
+      "args": [
+        [
+          "A",
+          "B"
+        ],
+        "as-typed"
+      ],
+      "expected": "A B",
+      "why": "tokens curtos em caps as-typed"
+    },
+    {
+      "id": "fm-23",
+      "fn": "format",
+      "args": [
+        [
+          "A",
+          "B"
+        ],
+        "lower-space"
+      ],
+      "expected": "a b",
+      "why": "tokens curtos em lower pedido"
+    },
+    {
+      "id": "fm-24",
+      "fn": "format",
+      "args": [
+        [
+          "McDonald"
+        ],
+        "title"
+      ],
+      "expected": "Mcdonald",
+      "why": "title destrói o Mc"
+    },
+    {
+      "id": "fm-25",
+      "fn": "format",
+      "args": [
+        [
+          "iPhone"
+        ],
+        "title"
+      ],
+      "expected": "Iphone",
+      "why": "title mata o iPhone"
+    },
+    {
+      "id": "fm-26",
+      "fn": "format",
+      "args": [
+        [
+          "Ritalin",
+          "Horse",
+          "Staple"
+        ],
+        "snake"
+      ],
+      "expected": "ritalin_horse_staple",
+      "why": "snake de três palavras"
+    },
+    {
+      "id": "fm-27",
+      "fn": "format",
+      "args": [
+        [
+          "Ritalin",
+          "Horse",
+          "Staple"
+        ],
+        "kebab"
+      ],
+      "expected": "ritalin-horse-staple",
+      "why": "kebab de três palavras"
+    },
+    {
+      "id": "fm-28",
+      "fn": "format",
+      "args": [
+        [
+          "Ritalin",
+          "Horse",
+          "Staple"
+        ],
+        "scream"
+      ],
+      "expected": "RITALIN_HORSE_STAPLE",
+      "why": "scream de três palavras"
+    },
+    {
+      "id": "fm-29",
+      "fn": "format",
+      "args": [
+        [
+          "Ritalin",
+          "Horse",
+          "Staple"
+        ],
+        "upper-space"
+      ],
+      "expected": "RITALIN HORSE STAPLE",
+      "why": "upper-space de três palavras"
+    },
+    {
+      "id": "fm-30",
+      "fn": "format",
+      "args": [
+        [
+          "Ritalin",
+          "Horse",
+          "Staple"
+        ],
+        "none"
+      ],
+      "expected": "ritalinhorsestaple",
+      "why": "none de três palavras"
+    },
+    {
+      "id": "cpay-01",
+      "fn": "copyPayload",
+      "args": [
+        "Ritalin ",
+        "as-typed"
+      ],
+      "expected": "Ritalin",
+      "why": "copiar como digitado NÃO lowercasa"
+    },
+    {
+      "id": "cpay-02",
+      "fn": "copyPayload",
+      "args": [
+        "Ritalin Horse ",
+        "as-typed"
+      ],
+      "expected": "Ritalin Horse",
+      "why": "duas palavras com case intacto no copy"
+    },
+    {
+      "id": "cpay-03",
+      "fn": "copyPayload",
+      "args": [
+        "RITALIN HORSE ",
+        "as-typed"
+      ],
+      "expected": "RITALIN HORSE",
+      "why": "tudo maiúsculo sobrevive no copy"
+    },
+    {
+      "id": "cpay-04",
+      "fn": "copyPayload",
+      "args": [
+        "RiTaLin ",
+        "as-typed"
+      ],
+      "expected": "RiTaLin",
+      "why": "zebra-case chega inteiro no clipboard"
+    },
+    {
+      "id": "cpay-05",
+      "fn": "copyPayload",
+      "args": [
+        "Ritalin ",
+        "lower-space"
+      ],
+      "expected": "ritalin",
+      "why": "lower-space só quando o usuário pediu"
+    },
+    {
+      "id": "cpay-06",
+      "fn": "copyPayload",
+      "args": [
+        "Ritalin Horse ",
+        "upper-space"
+      ],
+      "expected": "RITALIN HORSE",
+      "why": "upper-space força tudo em caps"
+    },
+    {
+      "id": "cpay-07",
+      "fn": "copyPayload",
+      "args": [
+        "Ritalin Horse ",
+        "scream"
+      ],
+      "expected": "RITALIN_HORSE",
+      "why": "scream no copy"
+    },
+    {
+      "id": "cpay-08",
+      "fn": "copyPayload",
+      "args": [
+        "Ritalin Horse ",
+        "camel"
+      ],
+      "expected": "ritalinHorse",
+      "why": "camel baixa a primeira no copy"
+    },
+    {
+      "id": "cpay-09",
+      "fn": "copyPayload",
+      "args": [
+        "Ritalin Horse ",
+        "pascal"
+      ],
+      "expected": "RitalinHorse",
+      "why": "pascal no copy"
+    },
+    {
+      "id": "cpay-10",
+      "fn": "copyPayload",
+      "args": [
+        "Ritalin Horse ",
+        "snake"
+      ],
+      "expected": "ritalin_horse",
+      "why": "snake no copy"
+    },
+    {
+      "id": "cpay-11",
+      "fn": "copyPayload",
+      "args": [
+        "Ritalin Horse ",
+        "kebab"
+      ],
+      "expected": "ritalin-horse",
+      "why": "kebab no copy"
+    },
+    {
+      "id": "cpay-12",
+      "fn": "copyPayload",
+      "args": [
+        "Ritalin Horse ",
+        "none"
+      ],
+      "expected": "ritalinhorse",
+      "why": "none cola no copy"
+    },
+    {
+      "id": "cpay-13",
+      "fn": "copyPayload",
+      "args": [
+        "Ritalin Horse ",
+        "title"
+      ],
+      "expected": "Ritalin Horse",
+      "why": "title no copy"
+    },
+    {
+      "id": "cpay-14",
+      "fn": "copyPayload",
+      "args": [
+        "Ritalin Horse ",
+        "sentence"
+      ],
+      "expected": "Ritalin horse",
+      "why": "sentence no copy"
+    },
+    {
+      "id": "cpay-15",
+      "fn": "copyPayload",
+      "args": [
+        "Ritalin Horse ",
+        "estilo-inventado"
+      ],
+      "expected": "Ritalin Horse",
+      "why": "estilo desconhecido NÃO lowercasa no copy"
+    },
+    {
+      "id": "cpay-16",
+      "fn": "copyPayload",
+      "args": [
+        "Ritalin Horse ",
+        null
+      ],
+      "expected": "Ritalin Horse",
+      "why": "style null cai em as-typed"
+    },
+    {
+      "id": "cpay-17",
+      "fn": "copyPayload",
+      "args": [
+        "",
+        "as-typed"
+      ],
+      "expected": "",
+      "why": "draft vazio copia string vazia"
+    },
+    {
+      "id": "cpay-18",
+      "fn": "copyPayload",
+      "args": [
+        "   ",
+        "as-typed"
+      ],
+      "expected": "",
+      "why": "só espaços copia string vazia"
+    },
+    {
+      "id": "cpay-19",
+      "fn": "copyPayload",
+      "args": [
+        "Ritalin",
+        "as-typed"
+      ],
+      "expected": "Ritalin",
+      "why": "sem trailing space ainda copia o current"
+    },
+    {
+      "id": "cpay-20",
+      "fn": "copyPayload",
+      "args": [
+        "Ritalin\nHorse ",
+        "as-typed"
+      ],
+      "expected": "Ritalin Horse",
+      "why": "quebra de linha é whitespace no split"
+    },
+    {
+      "id": "cpay-21",
+      "fn": "copyPayload",
+      "args": [
+        "A B ",
+        "as-typed"
+      ],
+      "expected": "A B",
+      "why": "iniciais sobrevivem no copy"
+    },
+    {
+      "id": "cpay-22",
+      "fn": "copyPayload",
+      "args": [
+        "McDonald ",
+        "as-typed"
+      ],
+      "expected": "McDonald",
+      "why": "nome com Mc chega inteiro no copy"
+    },
+    {
+      "id": "cpay-23",
+      "fn": "copyPayload",
+      "args": [
+        "iPhone ",
+        "as-typed"
+      ],
+      "expected": "iPhone",
+      "why": "iPhone chega inteiro no copy"
+    },
+    {
+      "id": "cpay-24",
+      "fn": "copyPayload",
+      "args": [
+        "iPhone ",
+        "title"
+      ],
+      "expected": "Iphone",
+      "why": "copy em title altera o iPhone"
+    },
+    {
+      "id": "cpay-25",
+      "fn": "copyPayload",
+      "args": [
+        "Correct Battery Staple ",
+        "as-typed"
+      ],
+      "expected": "Correct Battery Staple",
+      "why": "clássico em title no copy"
+    },
+    {
+      "id": "cpay-26",
+      "fn": "copyPayload",
+      "args": [
+        "correct battery staple ",
+        "as-typed"
+      ],
+      "expected": "correct battery staple",
+      "why": "clássico em lower no copy"
+    },
+    {
+      "id": "cpay-27",
+      "fn": "copyPayload",
+      "args": [
+        "CORRECT BATTERY STAPLE ",
+        "as-typed"
+      ],
+      "expected": "CORRECT BATTERY STAPLE",
+      "why": "clássico em caps no copy as-typed"
+    },
+    {
+      "id": "cpay-28",
+      "fn": "copyPayload",
+      "args": [
+        "CORRECT BATTERY STAPLE ",
+        "lower-space"
+      ],
+      "expected": "correct battery staple",
+      "why": "caps só desce quando o estilo pede"
+    },
+    {
+      "id": "cpay-29",
+      "fn": "copyPayload",
+      "args": [
+        "Ritalin\tHorse ",
+        "as-typed"
+      ],
+      "expected": "Ritalin Horse",
+      "why": "tab é whitespace no split do copy"
+    },
+    {
+      "id": "cpay-30",
+      "fn": "copyPayload",
+      "args": [
+        "Ritalin Horse ",
+        "kebab"
+      ],
+      "expected": "ritalin-horse",
+      "why": "kebab de duas no copy"
+    },
+    {
+      "id": "sd-01",
+      "fn": "splitDraft",
+      "args": [
+        "Ritalin "
+      ],
+      "expected": {
+        "accepted": [
+          "Ritalin"
+        ],
+        "current": ""
+      },
+      "why": "trailing space marca como aceita"
+    },
+    {
+      "id": "sd-02",
+      "fn": "splitDraft",
+      "args": [
+        "Ritalin"
+      ],
+      "expected": {
+        "accepted": [],
+        "current": "Ritalin"
+      },
+      "why": "sem espaço fica como current"
+    },
+    {
+      "id": "sd-03",
+      "fn": "splitDraft",
+      "args": [
+        "Ritalin Horse "
+      ],
+      "expected": {
+        "accepted": [
+          "Ritalin",
+          "Horse"
+        ],
+        "current": ""
+      },
+      "why": "duas palavras aceitas"
+    },
+    {
+      "id": "sd-04",
+      "fn": "splitDraft",
+      "args": [
+        "Ritalin Hor"
+      ],
+      "expected": {
+        "accepted": [
+          "Ritalin"
+        ],
+        "current": "Hor"
+      },
+      "why": "escrevendo a segunda palavra"
+    },
+    {
+      "id": "sd-05",
+      "fn": "splitDraft",
+      "args": [
+        ""
+      ],
+      "expected": {
+        "accepted": [],
+        "current": ""
+      },
+      "why": "draft vazio"
+    },
+    {
+      "id": "sd-06",
+      "fn": "splitDraft",
+      "args": [
+        "   "
+      ],
+      "expected": {
+        "accepted": [],
+        "current": ""
+      },
+      "why": "só whitespace"
+    },
+    {
+      "id": "sd-07",
+      "fn": "splitDraft",
+      "args": [
+        "  Ritalin   Horse  "
+      ],
+      "expected": {
+        "accepted": [
+          "Ritalin",
+          "Horse"
+        ],
+        "current": ""
+      },
+      "why": "espaços colapsam e trailing aceita"
+    },
+    {
+      "id": "sd-08",
+      "fn": "splitDraft",
+      "args": [
+        "Ritalin\nHorse "
+      ],
+      "expected": {
+        "accepted": [
+          "Ritalin",
+          "Horse"
+        ],
+        "current": ""
+      },
+      "why": "quebra de linha separa tokens"
+    },
+    {
+      "id": "sd-09",
+      "fn": "splitDraft",
+      "args": [
+        "Ritalin\tHorse "
+      ],
+      "expected": {
+        "accepted": [
+          "Ritalin",
+          "Horse"
+        ],
+        "current": ""
+      },
+      "why": "tab separa tokens"
+    },
+    {
+      "id": "sd-10",
+      "fn": "splitDraft",
+      "args": [
+        "A B C "
+      ],
+      "expected": {
+        "accepted": [
+          "A",
+          "B",
+          "C"
+        ],
+        "current": ""
+      },
+      "why": "três palavras aceitas"
+    },
+    {
+      "id": "sd-11",
+      "fn": "splitDraft",
+      "args": [
+        "  Rit"
+      ],
+      "expected": {
+        "accepted": [],
+        "current": "Rit"
+      },
+      "why": "trim no início deixa current"
+    },
+    {
+      "id": "sd-12",
+      "fn": "splitDraft",
+      "args": [
+        "Ritalin Horse Staple "
+      ],
+      "expected": {
+        "accepted": [
+          "Ritalin",
+          "Horse",
+          "Staple"
+        ],
+        "current": ""
+      },
+      "why": "três palavras aceitas"
+    },
+    {
+      "id": "dm-01",
+      "fn": "damerau",
+      "args": [
+        "ritalin",
+        "ritalin"
+      ],
+      "expected": 0,
+      "why": "iguais dão zero"
+    },
+    {
+      "id": "dm-02",
+      "fn": "damerau",
+      "args": [
+        "ritalim",
+        "ritalin"
+      ],
+      "expected": 1,
+      "why": "substituição dá 1"
+    },
+    {
+      "id": "dm-03",
+      "fn": "damerau",
+      "args": [
+        "ritalinx",
+        "ritalin"
+      ],
+      "expected": 1,
+      "why": "inserção dá 1"
+    },
+    {
+      "id": "dm-04",
+      "fn": "damerau",
+      "args": [
+        "ritali",
+        "ritalin"
+      ],
+      "expected": 1,
+      "why": "deleção dá 1"
+    },
+    {
+      "id": "dm-05",
+      "fn": "damerau",
+      "args": [
+        "ritalin",
+        "ritlain"
+      ],
+      "expected": 1,
+      "why": "transposição adjacente dá 1"
+    },
+    {
+      "id": "dm-06",
+      "fn": "damerau",
+      "args": [
+        "rtalin",
+        "ritalin"
+      ],
+      "expected": 1,
+      "why": "letra do meio faltando dá 1"
+    },
+    {
+      "id": "dm-07",
+      "fn": "damerau",
+      "args": [
+        "ritallin",
+        "ritalin"
+      ],
+      "expected": 1,
+      "why": "letra extra dá 1"
+    },
+    {
+      "id": "dm-08",
+      "fn": "damerau",
+      "args": [
+        "xxxx",
+        "ritalin"
+      ],
+      "expected": 99,
+      "why": "longe demais dá 99"
+    },
+    {
+      "id": "dm-09",
+      "fn": "damerau",
+      "args": [
+        "ho",
+        "horse"
+      ],
+      "expected": 99,
+      "why": "delta de tamanho maior que 2 dá 99"
+    },
+    {
+      "id": "dm-10",
+      "fn": "damerau",
+      "args": [
+        "hrose",
+        "horse"
+      ],
+      "expected": 1,
+      "why": "transposição hr/or dá 1"
+    },
+    {
+      "id": "dm-11",
+      "fn": "damerau",
+      "args": [
+        "aple",
+        "apple"
+      ],
+      "expected": 1,
+      "why": "deleção de p dá 1"
+    },
+    {
+      "id": "dm-12",
+      "fn": "damerau",
+      "args": [
+        "applle",
+        "apple"
+      ],
+      "expected": 1,
+      "why": "inserção de l dá 1"
+    },
+    {
+      "id": "dm-13",
+      "fn": "damerau",
+      "args": [
+        "battry",
+        "battery"
+      ],
+      "expected": 1,
+      "why": "e faltando dá 1"
+    },
+    {
+      "id": "dm-14",
+      "fn": "damerau",
+      "args": [
+        "batery",
+        "battery"
+      ],
+      "expected": 1,
+      "why": "t faltando dá 1"
+    },
+    {
+      "id": "dm-15",
+      "fn": "damerau",
+      "args": [
+        "corect",
+        "correct"
+      ],
+      "expected": 1,
+      "why": "r faltando dá 1"
+    },
+    {
+      "id": "dm-16",
+      "fn": "damerau",
+      "args": [
+        "a",
+        "b"
+      ],
+      "expected": 1,
+      "why": "uma letra de diferença dá 1"
+    },
+    {
+      "id": "dm-17",
+      "fn": "damerau",
+      "args": [
+        "",
+        "ab"
+      ],
+      "expected": 2,
+      "why": "vazio contra duas letras dá 2"
+    },
+    {
+      "id": "dm-18",
+      "fn": "damerau",
+      "args": [
+        "zeebra",
+        "zebra"
+      ],
+      "expected": 1,
+      "why": "ee extra dá 1"
+    },
+    {
+      "id": "dm-19",
+      "fn": "damerau",
+      "args": [
+        "yelloow",
+        "yellow"
+      ],
+      "expected": 1,
+      "why": "o extra dá 1"
+    },
+    {
+      "id": "dm-20",
+      "fn": "damerau",
+      "args": [
+        "ablee",
+        "able"
+      ],
+      "expected": 1,
+      "why": "e extra dá 1"
+    },
+    {
+      "id": "dm-21",
+      "fn": "damerau",
+      "args": [
+        "stapel",
+        "staple"
+      ],
+      "expected": 1,
+      "why": "transposição el/le dá 1"
+    },
+    {
+      "id": "dm-22",
+      "fn": "damerau",
+      "args": [
+        "orangg",
+        "orange"
+      ],
+      "expected": 1,
+      "why": "g extra dá 1"
+    },
+    {
+      "id": "dm-23",
+      "fn": "damerau",
+      "args": [
+        "oragne",
+        "orange"
+      ],
+      "expected": 1,
+      "why": "transposição gn/ng dá 1"
+    },
+    {
+      "id": "dm-24",
+      "fn": "damerau",
+      "args": [
+        "ritalin",
+        "ritalin"
+      ],
+      "expected": 0,
+      "why": "idênticas dão zero"
+    },
+    {
+      "id": "aa-01",
+      "fn": "applyAccept",
+      "args": [
+        "Rit",
+        "ritalin"
+      ],
+      "expected": "Ritalin ",
+      "why": "Tab em prefixo completa a palavra"
+    },
+    {
+      "id": "aa-02",
+      "fn": "applyAccept",
+      "args": [
+        "RIT",
+        "ritalin"
+      ],
+      "expected": "RITALIN ",
+      "why": "Tab all-caps completa em caps"
+    },
+    {
+      "id": "aa-03",
+      "fn": "applyAccept",
+      "args": [
+        "Ritalin Hor",
+        "horse"
+      ],
+      "expected": "Ritalin Horse ",
+      "why": "Tab na segunda palavra"
+    },
+    {
+      "id": "aa-04",
+      "fn": "applyAccept",
+      "args": [
+        "Ritalim",
+        "ritalin"
+      ],
+      "expected": "Ritalin ",
+      "why": "Tab em typo pinta a certa"
+    },
+    {
+      "id": "aa-05",
+      "fn": "applyAccept",
+      "args": [
+        "yel",
+        "yellow"
+      ],
+      "expected": "yellow ",
+      "why": "Tab em prefixo único yellow"
+    },
+    {
+      "id": "aa-06",
+      "fn": "applyAccept",
+      "args": [
+        "YEL",
+        "yellow"
+      ],
+      "expected": "YELLOW ",
+      "why": "Tab YEL vira YELLOW"
+    },
+    {
+      "id": "aa-07",
+      "fn": "applyAccept",
+      "args": [
+        "Yellow Horse yel",
+        "yellow"
+      ],
+      "expected": "Yellow Horse yellow ",
+      "why": "Tab na terceira palavra"
+    },
+    {
+      "id": "aa-08",
+      "fn": "applyAccept",
+      "args": [
+        "Ritalin ",
+        "horse"
+      ],
+      "expected": "Ritalin horse ",
+      "why": "current vazio completa a palavra inteira"
+    },
+    {
+      "id": "aa-09",
+      "fn": "applyAccept",
+      "args": [
+        "Aard",
+        "aardvark"
+      ],
+      "expected": "Aardvark ",
+      "why": "Tab Aard vira Aardvark"
+    },
+    {
+      "id": "aa-10",
+      "fn": "applyAccept",
+      "args": [
+        "AARD",
+        "aardvark"
+      ],
+      "expected": "AARDVARK ",
+      "why": "Tab AARD vira AARDVARK"
+    },
+    {
+      "id": "aa-11",
+      "fn": "applyAccept",
+      "args": [
+        "  Rit",
+        "ritalin"
+      ],
+      "expected": "Ritalin ",
+      "why": "trim no split antes de completar"
+    },
+    {
+      "id": "aa-12",
+      "fn": "applyAccept",
+      "args": [
+        "Cor",
+        "correct"
+      ],
+      "expected": "Correct ",
+      "why": "Tab Cor vira Correct"
+    },
+    {
+      "id": "aa-13",
+      "fn": "applyAccept",
+      "args": [
+        "COR",
+        "correct"
+      ],
+      "expected": "CORRECT ",
+      "why": "Tab COR vira CORRECT"
+    },
+    {
+      "id": "aa-14",
+      "fn": "applyAccept",
+      "args": [
+        "Correct Bat",
+        "battery"
+      ],
+      "expected": "Correct Battery ",
+      "why": "Tab na segunda palavra"
+    },
+    {
+      "id": "aa-15",
+      "fn": "applyAccept",
+      "args": [
+        "App",
+        "apple"
+      ],
+      "expected": "Apple ",
+      "why": "Tab App vira Apple"
+    },
+    {
+      "id": "aa-16",
+      "fn": "applyAccept",
+      "args": [
+        "APP",
+        "apply"
+      ],
+      "expected": "APPLY ",
+      "why": "Tab APP vira APPLY"
+    },
+    {
+      "id": "aa-17",
+      "fn": "applyAccept",
+      "args": [
+        "Sta",
+        "staple"
+      ],
+      "expected": "Staple ",
+      "why": "Tab Sta vira Staple"
+    },
+    {
+      "id": "aa-18",
+      "fn": "applyAccept",
+      "args": [
+        "STA",
+        "staple"
+      ],
+      "expected": "STAPLE ",
+      "why": "Tab STA vira STAPLE"
+    },
+    {
+      "id": "ul-01",
+      "fn": "undoLastAccept",
+      "args": [
+        "Ritalin Horse "
+      ],
+      "expected": "Ritalin ",
+      "why": "Shift+Tab tira a última aceita"
+    },
+    {
+      "id": "ul-02",
+      "fn": "undoLastAccept",
+      "args": [
+        "Ritalin "
+      ],
+      "expected": "Ritalin",
+      "why": "uma palavra aceita volta a current"
+    },
+    {
+      "id": "ul-03",
+      "fn": "undoLastAccept",
+      "args": [
+        "Ritalin"
+      ],
+      "expected": "",
+      "why": "current sozinho some"
+    },
+    {
+      "id": "ul-04",
+      "fn": "undoLastAccept",
+      "args": [
+        ""
+      ],
+      "expected": "",
+      "why": "draft vazio some"
+    },
+    {
+      "id": "ul-05",
+      "fn": "undoLastAccept",
+      "args": [
+        "A B C "
+      ],
+      "expected": "A B ",
+      "why": "três palavras tiram a última"
+    },
+    {
+      "id": "ul-06",
+      "fn": "undoLastAccept",
+      "args": [
+        "Ritalin Horse Staple "
+      ],
+      "expected": "Ritalin Horse ",
+      "why": "três aceitas tiram a última"
+    },
+    {
+      "id": "ul-07",
+      "fn": "undoLastAccept",
+      "args": [
+        "Ritalin Horse"
+      ],
+      "expected": "Ritalin ",
+      "why": "sem trailing some a current"
+    },
+    {
+      "id": "ul-08",
+      "fn": "undoLastAccept",
+      "args": [
+        "   "
+      ],
+      "expected": "",
+      "why": "só whitespace some"
+    },
+    {
+      "id": "ul-09",
+      "fn": "undoLastAccept",
+      "args": [
+        "Ritalin Horse Staple"
+      ],
+      "expected": "Ritalin Horse ",
+      "why": "sem trailing some a current"
+    },
+    {
+      "id": "ul-10",
+      "fn": "undoLastAccept",
+      "args": [
+        "A "
+      ],
+      "expected": "A",
+      "why": "uma palavra com trailing volta a current"
+    },
+    {
+      "id": "si-01",
+      "fn": "shouldInterceptTab",
+      "args": [
+        0
+      ],
+      "expected": false,
+      "why": "sem sugestão o Tab não prende"
+    },
+    {
+      "id": "si-02",
+      "fn": "shouldInterceptTab",
+      "args": [
+        3
+      ],
+      "expected": true,
+      "why": "com sugestão o Tab completa"
+    },
+    {
+      "id": "si-03",
+      "fn": "shouldInterceptTab",
+      "args": [
+        1
+      ],
+      "expected": true,
+      "why": "uma sugestão já prende"
+    },
+    {
+      "id": "si-04",
+      "fn": "shouldInterceptTab",
+      "args": [
+        -1
+      ],
+      "expected": false,
+      "why": "negativo não prende"
+    },
+    {
+      "id": "si-05",
+      "fn": "shouldInterceptTab",
+      "args": [
+        "2"
+      ],
+      "expected": true,
+      "why": "string numérica vira número"
+    },
+    {
+      "id": "si-06",
+      "fn": "shouldInterceptTab",
+      "args": [
+        ""
+      ],
+      "expected": false,
+      "why": "string vazia não prende"
+    },
+    {
+      "id": "si-07",
+      "fn": "shouldInterceptTab",
+      "args": [
+        null
+      ],
+      "expected": false,
+      "why": "null não prende"
+    },
+    {
+      "id": "si-08",
+      "fn": "shouldInterceptTab",
+      "args": [
+        0.5
+      ],
+      "expected": true,
+      "why": "fração positiva prende"
+    },
+    {
+      "id": "lf-01",
+      "fn": "letterFlags",
+      "args": [
+        "RiT"
+      ],
+      "expected": [
+        "U",
+        "L",
+        "U"
+      ],
+      "why": "flags de zebra curta"
+    },
+    {
+      "id": "lf-02",
+      "fn": "letterFlags",
+      "args": [
+        "R2t"
+      ],
+      "expected": [
+        "U",
+        "L"
+      ],
+      "why": "dígito é ignorado nas flags"
+    },
+    {
+      "id": "lf-03",
+      "fn": "letterFlags",
+      "args": [
+        "iPhone"
+      ],
+      "expected": [
+        "L",
+        "U",
+        "L",
+        "L",
+        "L",
+        "L"
+      ],
+      "why": "flags do iPhone"
+    },
+    {
+      "id": "lf-04",
+      "fn": "letterFlags",
+      "args": [
+        "RIT"
+      ],
+      "expected": [
+        "U",
+        "U",
+        "U"
+      ],
+      "why": "flags all-upper"
+    },
+    {
+      "id": "lf-05",
+      "fn": "letterFlags",
+      "args": [
+        "rit"
+      ],
+      "expected": [
+        "L",
+        "L",
+        "L"
+      ],
+      "why": "flags all-lower"
+    },
+    {
+      "id": "lf-06",
+      "fn": "letterFlags",
+      "args": [
+        ""
+      ],
+      "expected": [],
+      "why": "vazio não gera flags"
+    },
+    {
+      "id": "lf-07",
+      "fn": "letterFlags",
+      "args": [
+        "123"
+      ],
+      "expected": [],
+      "why": "só dígitos não gera flags"
+    },
+    {
+      "id": "lf-08",
+      "fn": "letterFlags",
+      "args": [
+        "McDonald"
+      ],
+      "expected": [
+        "U",
+        "L",
+        "U",
+        "L",
+        "L",
+        "L",
+        "L",
+        "L"
+      ],
+      "why": "flags do McDonald"
+    },
+    {
+      "id": "lf-09",
+      "fn": "letterFlags",
+      "args": [
+        "RiTaLiN"
+      ],
+      "expected": [
+        "U",
+        "L",
+        "U",
+        "L",
+        "U",
+        "L",
+        "U"
+      ],
+      "why": "flags de zebra longa"
+    },
+    {
+      "id": "lf-10",
+      "fn": "letterFlags",
+      "args": [
+        "a"
+      ],
+      "expected": [
+        "L"
+      ],
+      "why": "uma letra minúscula"
+    },
+    {
+      "id": "gp-01",
+      "fn": "ghostParts",
+      "args": [
+        "Rit",
+        "ritalin"
+      ],
+      "expected": {
+        "keep": "Rit",
+        "add": "alin",
+        "display": "Ritalin"
+      },
+      "why": "fantasma do resto da palavra"
+    },
+    {
+      "id": "gp-02",
+      "fn": "ghostParts",
+      "args": [
+        "RIT",
+        "ritalin"
+      ],
+      "expected": {
+        "keep": "RIT",
+        "add": "ALIN",
+        "display": "RITALIN"
+      },
+      "why": "fantasma em caps"
+    },
+    {
+      "id": "gp-03",
+      "fn": "ghostParts",
+      "args": [
+        "Ritalim",
+        "ritalin"
+      ],
+      "expected": {
+        "keep": "",
+        "add": "Ritalin",
+        "display": "Ritalin"
+      },
+      "why": "typo mostra a palavra certa inteira"
+    },
+    {
+      "id": "gp-04",
+      "fn": "ghostParts",
+      "args": [
+        "yellow",
+        "yellow"
+      ],
+      "expected": {
+        "keep": "yellow",
+        "add": "",
+        "display": "yellow"
+      },
+      "why": "já completa não tem fantasma"
+    },
+    {
+      "id": "gp-05",
+      "fn": "ghostParts",
+      "args": [
+        "yel",
+        "yellow"
+      ],
+      "expected": {
+        "keep": "yel",
+        "add": "low",
+        "display": "yellow"
+      },
+      "why": "fantasma low"
+    },
+    {
+      "id": "gp-06",
+      "fn": "ghostParts",
+      "args": [
+        "YEL",
+        "yellow"
+      ],
+      "expected": {
+        "keep": "YEL",
+        "add": "LOW",
+        "display": "YELLOW"
+      },
+      "why": "fantasma LOW em caps"
+    },
+    {
+      "id": "gp-07",
+      "fn": "ghostParts",
+      "args": [
+        "",
+        "horse"
+      ],
+      "expected": {
+        "keep": "",
+        "add": "horse",
+        "display": "horse"
+      },
+      "why": "typed vazio mostra a palavra inteira"
+    },
+    {
+      "id": "gp-08",
+      "fn": "ghostParts",
+      "args": [
+        "ice",
+        "ice"
+      ],
+      "expected": {
+        "keep": "ice",
+        "add": "",
+        "display": "ice"
+      },
+      "why": "exata não tem fantasma"
+    },
+    {
+      "id": "gp-09",
+      "fn": "ghostParts",
+      "args": [
+        "I",
+        "ice"
+      ],
+      "expected": {
+        "keep": "I",
+        "add": "CE",
+        "display": "ICE"
+      },
+      "why": "I mostra fantasma CE em caps"
+    },
+    {
+      "id": "gp-10",
+      "fn": "ghostParts",
+      "args": [
+        "Cor",
+        "correct"
+      ],
+      "expected": {
+        "keep": "Cor",
+        "add": "rect",
+        "display": "Correct"
+      },
+      "why": "fantasma rect"
+    },
+    {
+      "id": "fd-01",
+      "fn": "formatDestroysUserCase",
+      "args": [
+        [
+          "Ritalin"
+        ],
+        "as-typed"
+      ],
+      "expected": false,
+      "why": "as-typed não destrói case"
+    },
+    {
+      "id": "fd-02",
+      "fn": "formatDestroysUserCase",
+      "args": [
+        [
+          "Ritalin"
+        ],
+        "lower-space"
+      ],
+      "expected": true,
+      "why": "lower-space destrói o R"
+    },
+    {
+      "id": "fd-03",
+      "fn": "formatDestroysUserCase",
+      "args": [
+        [
+          "ritalin"
+        ],
+        "lower-space"
+      ],
+      "expected": false,
+      "why": "já era lower então não destrói"
+    },
+    {
+      "id": "fd-04",
+      "fn": "formatDestroysUserCase",
+      "args": [
+        [
+          "Ritalin"
+        ],
+        "upper-space"
+      ],
+      "expected": true,
+      "why": "upper-space força caps e tem lower"
+    },
+    {
+      "id": "fd-05",
+      "fn": "formatDestroysUserCase",
+      "args": [
+        [
+          "Ritalin"
+        ],
+        "scream"
+      ],
+      "expected": true,
+      "why": "scream força caps e tem lower"
+    },
+    {
+      "id": "fd-06",
+      "fn": "formatDestroysUserCase",
+      "args": [
+        [
+          "RITALIN"
+        ],
+        "upper-space"
+      ],
+      "expected": false,
+      "why": "já tudo em caps não destrói"
+    },
+    {
+      "id": "fd-07",
+      "fn": "formatDestroysUserCase",
+      "args": [
+        [
+          "RITALIN"
+        ],
+        "scream"
+      ],
+      "expected": false,
+      "why": "já tudo em caps não destrói no scream"
+    },
+    {
+      "id": "fd-08",
+      "fn": "formatDestroysUserCase",
+      "args": [
+        [
+          "A",
+          "B"
+        ],
+        "as-typed"
+      ],
+      "expected": false,
+      "why": "iniciais as-typed não destrói"
+    },
+    {
+      "id": "fd-09",
+      "fn": "formatDestroysUserCase",
+      "args": [
+        [
+          "A",
+          "B"
+        ],
+        "lower-space"
+      ],
+      "expected": true,
+      "why": "iniciais contra lower destrói"
+    },
+    {
+      "id": "fd-10",
+      "fn": "formatDestroysUserCase",
+      "args": [
+        [
+          "McDonald"
+        ],
+        "title"
+      ],
+      "expected": true,
+      "why": "title destrói o Mc"
+    },
+    {
+      "id": "fd-11",
+      "fn": "formatDestroysUserCase",
+      "args": [
+        [
+          "McDonald"
+        ],
+        "as-typed"
+      ],
+      "expected": false,
+      "why": "as-typed mantém o Mc"
+    },
+    {
+      "id": "fd-12",
+      "fn": "formatDestroysUserCase",
+      "args": [
+        [],
+        "lower-space"
+      ],
+      "expected": false,
+      "why": "sem tokens não destrói"
+    },
+    {
+      "id": "fd-13",
+      "fn": "formatDestroysUserCase",
+      "args": [
+        [
+          "Ritalin"
+        ],
+        null
+      ],
+      "expected": false,
+      "why": "style null não destrói"
+    },
+    {
+      "id": "fd-14",
+      "fn": "formatDestroysUserCase",
+      "args": [
+        [
+          "123"
+        ],
+        "lower-space"
+      ],
+      "expected": false,
+      "why": "só dígitos não destrói"
+    },
+    {
+      "id": "fd-15",
+      "fn": "formatDestroysUserCase",
+      "args": [
+        [
+          "123"
+        ],
+        "scream"
+      ],
+      "expected": false,
+      "why": "só dígitos não destrói no scream"
+    },
+    {
+      "id": "fd-16",
+      "fn": "formatDestroysUserCase",
+      "args": [
+        [
+          "Ritalin",
+          "Horse"
+        ],
+        "snake"
+      ],
+      "expected": true,
+      "why": "snake destrói o case misto"
+    },
+    {
+      "id": "fd-17",
+      "fn": "formatDestroysUserCase",
+      "args": [
+        [
+          "ritalin",
+          "horse"
+        ],
+        "snake"
+      ],
+      "expected": false,
+      "why": "snake em lower não destrói"
+    },
+    {
+      "id": "fd-18",
+      "fn": "formatDestroysUserCase",
+      "args": [
+        [
+          "Ritalin"
+        ],
+        "title"
+      ],
+      "expected": true,
+      "why": "title destrói o R"
+    },
+    {
+      "id": "ot-01",
+      "fn": "outputText",
+      "args": [
+        "Rit",
+        "as-typed"
+      ],
+      "expected": "Rit",
+      "why": "current incompleto copia o que está"
+    },
+    {
+      "id": "ot-02",
+      "fn": "outputText",
+      "args": [
+        "Ritalin Horse",
+        "as-typed"
+      ],
+      "expected": "Ritalin Horse",
+      "why": "sem espaço final mantém case"
+    },
+    {
+      "id": "ot-03",
+      "fn": "outputText",
+      "args": [
+        "Ritalin Horse ",
+        "as-typed"
+      ],
+      "expected": "Ritalin Horse",
+      "why": "com espaço final mantém case"
+    },
+    {
+      "id": "ot-04",
+      "fn": "outputText",
+      "args": [
+        "Ritalin Horse ",
+        "lower-space"
+      ],
+      "expected": "ritalin horse",
+      "why": "lower-space no output"
+    },
+    {
+      "id": "ot-05",
+      "fn": "outputText",
+      "args": [
+        "Ritalin Horse ",
+        "scream"
+      ],
+      "expected": "RITALIN_HORSE",
+      "why": "scream no output"
+    },
+    {
+      "id": "ot-06",
+      "fn": "outputText",
+      "args": [
+        "Ritalin Horse ",
+        "camel"
+      ],
+      "expected": "ritalinHorse",
+      "why": "camel no output"
+    },
+    {
+      "id": "ot-07",
+      "fn": "outputText",
+      "args": [
+        "Ritalin Horse ",
+        "pascal"
+      ],
+      "expected": "RitalinHorse",
+      "why": "pascal no output"
+    },
+    {
+      "id": "ot-08",
+      "fn": "outputText",
+      "args": [
+        "Ritalin Horse ",
+        "snake"
+      ],
+      "expected": "ritalin_horse",
+      "why": "snake no output"
+    },
+    {
+      "id": "ot-09",
+      "fn": "outputText",
+      "args": [
+        "Ritalin Horse ",
+        "kebab"
+      ],
+      "expected": "ritalin-horse",
+      "why": "kebab no output"
+    },
+    {
+      "id": "ot-10",
+      "fn": "outputText",
+      "args": [
+        "Ritalin Horse ",
+        "none"
+      ],
+      "expected": "ritalinhorse",
+      "why": "none no output"
+    },
+    {
+      "id": "ot-11",
+      "fn": "outputText",
+      "args": [
+        "Ritalin Horse ",
+        "title"
+      ],
+      "expected": "Ritalin Horse",
+      "why": "title no output"
+    },
+    {
+      "id": "ot-12",
+      "fn": "outputText",
+      "args": [
+        "Ritalin Horse ",
+        "sentence"
+      ],
+      "expected": "Ritalin horse",
+      "why": "sentence no output"
+    },
+    {
+      "id": "ot-13",
+      "fn": "outputText",
+      "args": [
+        "Ritalin Horse ",
+        "upper-space"
+      ],
+      "expected": "RITALIN HORSE",
+      "why": "upper-space no output"
+    },
+    {
+      "id": "ot-14",
+      "fn": "outputText",
+      "args": [
+        "Ritalin Horse ",
+        "estilo-inventado"
+      ],
+      "expected": "Ritalin Horse",
+      "why": "estilo desconhecido mantém case"
+    },
+    {
+      "id": "ot-15",
+      "fn": "outputText",
+      "args": [
+        "Ritalin Horse ",
+        null
+      ],
+      "expected": "Ritalin Horse",
+      "why": "style null cai em as-typed"
+    },
+    {
+      "id": "ot-16",
+      "fn": "outputText",
+      "args": [
+        "",
+        "as-typed"
+      ],
+      "expected": "",
+      "why": "draft vazio devolve vazio"
+    },
+    {
+      "id": "ot-17",
+      "fn": "outputText",
+      "args": [
+        " ",
+        "as-typed"
+      ],
+      "expected": "",
+      "why": "só espaço devolve vazio"
+    },
+    {
+      "id": "ot-18",
+      "fn": "outputText",
+      "args": [
+        "Ritalin",
+        "as-typed"
+      ],
+      "expected": "Ritalin",
+      "why": "sem trailing mantém case"
+    },
+    {
+      "id": "ot-19",
+      "fn": "outputText",
+      "args": [
+        "Ritalin\nHorse ",
+        "as-typed"
+      ],
+      "expected": "Ritalin Horse",
+      "why": "quebra de linha é whitespace"
+    },
+    {
+      "id": "ot-20",
+      "fn": "outputText",
+      "args": [
+        "A B ",
+        "as-typed"
+      ],
+      "expected": "A B",
+      "why": "iniciais mantidas"
+    },
+    {
+      "id": "ot-21",
+      "fn": "outputText",
+      "args": [
+        "McDonald ",
+        "as-typed"
+      ],
+      "expected": "McDonald",
+      "why": "Mc mantido"
+    },
+    {
+      "id": "ot-22",
+      "fn": "outputText",
+      "args": [
+        "iPhone ",
+        "as-typed"
+      ],
+      "expected": "iPhone",
+      "why": "iPhone mantido"
+    },
+    {
+      "id": "ot-23",
+      "fn": "outputText",
+      "args": [
+        "iPhone ",
+        "title"
+      ],
+      "expected": "Iphone",
+      "why": "title mata o iPhone"
+    },
+    {
+      "id": "ot-24",
+      "fn": "outputText",
+      "args": [
+        "Correct Battery Staple ",
+        "as-typed"
+      ],
+      "expected": "Correct Battery Staple",
+      "why": "clássico em title mantido"
+    },
+    {
+      "id": "ot-25",
+      "fn": "outputText",
+      "args": [
+        "CORRECT BATTERY STAPLE ",
+        "as-typed"
+      ],
+      "expected": "CORRECT BATTERY STAPLE",
+      "why": "clássico em caps mantido"
+    },
+    {
+      "id": "ur-01",
+      "fn": "uniqueReady",
+      "args": [
+        "yel",
+        [
+          {
+            "tag": "prefixo único"
+          }
+        ],
+        3
+      ],
+      "expected": true,
+      "why": "prefixo único pronto para aceitar"
+    },
+    {
+      "id": "ur-02",
+      "fn": "uniqueReady",
+      "args": [
+        "ele",
+        [
+          {
+            "tag": "prefixo único"
+          }
+        ],
+        3
+      ],
+      "expected": true,
+      "why": "tag prefixo único com 3 letras"
+    },
+    {
+      "id": "ur-03",
+      "fn": "uniqueReady",
+      "args": [
+        "ye",
+        [
+          {
+            "tag": "prefixo único"
+          }
+        ],
+        3
+      ],
+      "expected": false,
+      "why": "ainda com 2 letras não está pronto"
+    },
+    {
+      "id": "ur-04",
+      "fn": "uniqueReady",
+      "args": [
+        "",
+        [],
+        3
+      ],
+      "expected": false,
+      "why": "current vazio não está pronto"
+    },
+    {
+      "id": "ur-05",
+      "fn": "uniqueReady",
+      "args": [
+        "yel",
+        [
+          {
+            "tag": "começa com"
+          }
+        ],
+        3
+      ],
+      "expected": false,
+      "why": "tag errada não está pronto"
+    },
+    {
+      "id": "ur-06",
+      "fn": "uniqueReady",
+      "args": [
+        "yel",
+        [],
+        3
+      ],
+      "expected": false,
+      "why": "sem sugestões não está pronto"
+    },
+    {
+      "id": "ur-07",
+      "fn": "uniqueReady",
+      "args": [
+        "yel",
+        null,
+        3
+      ],
+      "expected": false,
+      "why": "sugestões null não está pronto"
+    },
+    {
+      "id": "ur-08",
+      "fn": "uniqueReady",
+      "args": [
+        "yel",
+        [
+          {
+            "tag": "prefixo único"
+          }
+        ],
+        0
+      ],
+      "expected": false,
+      "why": "uniquePrefix zero não está pronto"
+    },
+    {
+      "id": "ur-09",
+      "fn": "uniqueReady",
+      "args": [
+        "yel",
+        [
+          {
+            "tag": "prefixo único"
+          }
+        ],
+        2
+      ],
+      "expected": true,
+      "why": "uniquePrefix 2 com 3 letras está pronto"
+    },
+    {
+      "id": "ur-10",
+      "fn": "uniqueReady",
+      "args": [
+        "ab",
+        [
+          {
+            "tag": "prefixo único"
+          }
+        ],
+        2
+      ],
+      "expected": true,
+      "why": "ab com uniquePrefix 2 está pronto"
+    }
+  ]
+}

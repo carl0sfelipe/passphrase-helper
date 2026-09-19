@@ -1,4 +1,5 @@
 (() => {
+  const C = window.PassphraseCore;
   const lists = window.WORDLISTS && typeof window.WORDLISTS === "object" ? window.WORDLISTS : {};
   const meta = Array.isArray(window.WORDLIST_META) ? window.WORDLIST_META : [];
 
@@ -12,6 +13,7 @@
   const clearBtn = document.getElementById("clear");
   const hideBtn = document.getElementById("hide");
   const copyNote = document.getElementById("copy-note");
+  const formatWarnEl = document.getElementById("format-warn");
   const styleInputs = document.querySelectorAll('input[name="style"]');
   const listSelect = document.getElementById("wordlist");
   const kickerEl = document.getElementById("kicker");
@@ -40,13 +42,11 @@
   catalog.all = all;
 
   let activeId = "eff_large";
-  let words = [];
-  let byLower = new Map();
-  let prefixUnique = new Map();
-  let prefix2 = new Map();
+  let index = C.createIndex([], 0);
   let suggestions = [];
   let selected = 0;
   let hidden = false;
+  let acceptStack = [];
 
   function currentMeta() {
     return meta.find((item) => item.id === activeId) || { id: activeId, label: activeId, uniquePrefix: 0 };
@@ -61,262 +61,13 @@
     return "";
   }
 
-  function indexActive() {
-    words = catalog[activeId] || [];
-    byLower = new Map(words.map((w) => [w.toLowerCase(), w]));
-    prefixUnique = new Map();
-    prefix2 = new Map();
-    const n = currentMeta().uniquePrefix || 0;
-    const counts = n ? new Map() : null;
-    for (const word of words) {
-      const lower = word.toLowerCase();
-      const two = lower.slice(0, 2);
-      if (!prefix2.has(two)) prefix2.set(two, []);
-      prefix2.get(two).push(word);
-      if (counts) {
-        const prefix = lower.slice(0, n);
-        counts.set(prefix, (counts.get(prefix) || 0) + 1);
-      }
-    }
-    if (counts) {
-      for (const word of words) {
-        const prefix = word.slice(0, n).toLowerCase();
-        if (counts.get(prefix) === 1) prefixUnique.set(prefix, word);
-      }
-    }
-  }
-
-  function candidates(query) {
-    const q = query.toLowerCase();
-    if (q.length >= 2) return prefix2.get(q.slice(0, 2)) || [];
-    if (!q) return [];
-    const out = [];
-    for (const [key, arr] of prefix2) {
-      if (key.startsWith(q[0])) out.push(...arr);
-    }
-    return out;
-  }
-
   function updateKicker() {
     const item = currentMeta();
-    const count = words.length.toLocaleString("pt-BR");
+    const count = index.words.length.toLocaleString("pt-BR");
     kickerEl.textContent =
       item.id === "all"
         ? `todas as listas · ${count} palavras únicas`
         : `${item.label} · ${count} palavras`;
-  }
-
-  function cap(word) {
-    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-  }
-
-  function isUpperLetter(ch) {
-    return ch !== ch.toLowerCase();
-  }
-
-  function isLowerLetter(ch) {
-    return ch !== ch.toUpperCase();
-  }
-
-  function letterFlags(typed) {
-    const flags = [];
-    for (const ch of typed) {
-      if (isUpperLetter(ch)) flags.push("U");
-      else if (isLowerLetter(ch)) flags.push("L");
-    }
-    return flags;
-  }
-
-  function paintCase(typed, dictLower) {
-    const flags = letterFlags(typed);
-    if (!flags.length) return dictLower;
-    if (flags.every((f) => f === "U")) return dictLower.toUpperCase();
-    if (flags.every((f) => f === "L")) return dictLower;
-
-    let fi = 0;
-    let out = "";
-    for (const ch of dictLower) {
-      const upper = ch.toUpperCase();
-      const lower = ch.toLowerCase();
-      if (upper === lower) {
-        out += ch;
-        continue;
-      }
-      if (fi < flags.length) {
-        out += flags[fi] === "U" ? upper : lower;
-        fi += 1;
-      } else {
-        out += lower;
-      }
-    }
-    return out;
-  }
-
-  function completePreserving(typed, dictWord) {
-    const dictLower = dictWord.toLowerCase();
-    const q = typed.toLowerCase();
-    if (dictLower === q) return typed;
-    if (dictLower.startsWith(q)) {
-      const rest = dictLower.slice(typed.length);
-      const flags = letterFlags(typed);
-      const allUpper = flags.length > 0 && flags.every((f) => f === "U");
-      return typed + (allUpper ? rest.toUpperCase() : rest);
-    }
-    return paintCase(typed, dictLower);
-  }
-
-  function format(tokens, style) {
-    if (!tokens.length) return "";
-    const lower = tokens.map((w) => w.toLowerCase());
-    switch (style) {
-      case "as-typed":
-        return tokens.join(" ");
-      case "title":
-        return tokens.map(cap).join(" ");
-      case "sentence":
-        return [cap(tokens[0]), ...lower.slice(1)].join(" ");
-      case "camel":
-        return lower[0] + tokens.slice(1).map(cap).join("");
-      case "pascal":
-        return tokens.map(cap).join("");
-      case "snake":
-        return lower.join("_");
-      case "kebab":
-        return lower.join("-");
-      case "scream":
-        return tokens.map((w) => w.toUpperCase()).join("_");
-      case "upper-space":
-        return tokens.map((w) => w.toUpperCase()).join(" ");
-      case "none":
-        return lower.join("");
-      default:
-        return lower.join(" ");
-    }
-  }
-
-  function splitDraft(value) {
-    if (!value.trim()) return { accepted: [], current: "" };
-    const trailingSpace = /\s$/.test(value);
-    const parts = value.trim().split(/\s+/);
-    if (trailingSpace) return { accepted: parts, current: "" };
-    return { accepted: parts.slice(0, -1), current: parts[parts.length - 1] };
-  }
-
-  function damerau(a, b) {
-    if (Math.abs(a.length - b.length) > 2) return 99;
-    const al = a.length;
-    const bl = b.length;
-    const prev2 = new Uint8Array(bl + 1);
-    const prev = new Uint8Array(bl + 1);
-    const cur = new Uint8Array(bl + 1);
-    for (let j = 0; j <= bl; j++) prev[j] = j;
-    for (let i = 1; i <= al; i++) {
-      cur[0] = i;
-      let rowMin = cur[0];
-      const ca = a.charCodeAt(i - 1);
-      const ca2 = i > 1 ? a.charCodeAt(i - 2) : 0;
-      for (let j = 1; j <= bl; j++) {
-        const cost = ca === b.charCodeAt(j - 1) ? 0 : 1;
-        let val = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + cost);
-        if (i > 1 && j > 1 && ca === b.charCodeAt(j - 2) && ca2 === b.charCodeAt(j - 1)) {
-          val = Math.min(val, prev2[j - 2] + 1);
-        }
-        cur[j] = val;
-        if (val < rowMin) rowMin = val;
-      }
-      if (rowMin > 2) return 99;
-      prev2.set(prev);
-      prev.set(cur);
-    }
-    return prev[bl];
-  }
-
-  function rank(query) {
-    const q = query.toLowerCase();
-    if (!q) return [];
-
-    const starts = [];
-    const contains = [];
-    const near = [];
-    const uniqueLen = currentMeta().uniquePrefix || 0;
-    const pool = candidates(q);
-
-    for (const word of pool) {
-      const w = word.toLowerCase();
-      if (w === q || w.startsWith(q)) {
-        starts.push(word);
-        continue;
-      }
-      if (q.length >= 3 && w.includes(q)) contains.push(word);
-    }
-
-    if (!starts.length && q.length >= 3) {
-      const maxDistance = q.length >= 4 ? 2 : 1;
-      for (const word of words) {
-        const w = word.toLowerCase();
-        if (w === q || w.startsWith(q)) continue;
-        if (Math.abs(w.length - q.length) > maxDistance) continue;
-        const d = damerau(q, w);
-        if (d > 0 && d <= maxDistance) near.push({ word, d });
-      }
-    }
-
-    const preferred = ["eff_large", "bip39_en", "onepassword", "english10k", "slip39", "monero_en", "diceware"];
-    const popularity = (word) => {
-      const key = word.toLowerCase();
-      for (const id of preferred) {
-        if (listSets[id]?.has(key)) return 0;
-      }
-      return 1;
-    };
-    starts.sort((a, b) => {
-      const exactA = a.toLowerCase() === q ? 0 : 1;
-      const exactB = b.toLowerCase() === q ? 0 : 1;
-      return exactA - exactB || popularity(a) - popularity(b) || a.length - b.length || a.localeCompare(b);
-    });
-    contains.sort((a, b) => {
-      const ia = a.toLowerCase().indexOf(q);
-      const ib = b.toLowerCase().indexOf(q);
-      return ia - ib || a.localeCompare(b);
-    });
-    near.sort((a, b) => a.d - b.d || a.word.localeCompare(b.word));
-
-    const out = [];
-    const seen = new Set();
-    const push = (word, tag, kind) => {
-      const key = word.toLowerCase();
-      if (seen.has(key)) return;
-      seen.add(key);
-      out.push({
-        word,
-        tag,
-        kind,
-        display: completePreserving(query, word),
-      });
-    };
-
-    for (const word of starts) {
-      const unique =
-        uniqueLen &&
-        q.length >= uniqueLen &&
-        prefixUnique.get(q.slice(0, uniqueLen)) === word;
-      let tag = "começa com";
-      if (word.toLowerCase() === q) tag = "exata";
-      else if (unique) tag = "prefixo único";
-      else if (activeId === "all") tag = sourceTag(word) || tag;
-      push(word, tag, "prefix");
-    }
-
-    if (!starts.length) {
-      for (const word of contains) {
-        push(word, activeId === "all" ? sourceTag(word) || "contém" : "contém", "contains");
-      }
-      for (const item of near) {
-        push(item.word, item.d === 1 ? "typo 1" : "typo 2", "typo");
-      }
-    }
-
-    return out.slice(0, 8);
   }
 
   function currentStyle() {
@@ -325,7 +76,7 @@
   }
 
   function unknown(tokens) {
-    return tokens.filter((t) => !byLower.has(t.toLowerCase()));
+    return tokens.filter((t) => !index.byLower.has(t.toLowerCase()));
   }
 
   function listsContaining(tokens) {
@@ -339,14 +90,32 @@
   }
 
   function outputText() {
-    const { accepted, current } = splitDraft(draftEl.value);
-    const tokens = current ? accepted.concat(current) : accepted;
-    return format(tokens, currentStyle());
+    return C.copyPayload(draftEl.value, currentStyle());
+  }
+
+  function replaceDraft(next) {
+    draftEl.focus();
+    const value = String(next);
+    if (typeof draftEl.select === "function") draftEl.select();
+    let ok = false;
+    try {
+      ok = document.execCommand("insertText", false, value);
+    } catch {
+      ok = false;
+    }
+    if (!ok || draftEl.value !== value) draftEl.value = value;
   }
 
   function renderSuggestions() {
-    const { current } = splitDraft(draftEl.value);
-    suggestions = current ? rank(current) : [];
+    const { current } = C.splitDraft(draftEl.value);
+    suggestions = current
+      ? C.rank(current, index, {
+          listSets,
+          preferred: ["eff_large", "bip39_en", "onepassword", "english10k", "slip39", "monero_en", "diceware"],
+          activeId,
+          sourceTag,
+        })
+      : [];
     selected = Math.min(selected, Math.max(0, suggestions.length - 1));
 
     if (!suggestions.length) {
@@ -358,11 +127,14 @@
     const uniqueHit = suggestions[0]?.tag === "prefixo único";
     const typoHit = suggestions[0]?.kind === "typo";
     const n = currentMeta().uniquePrefix;
+    const ghost = C.ghostParts(current, suggestions[0].word);
     hintEl.textContent = uniqueHit
-      ? `${n} letras já fecham esta palavra — Tab completa, seu case fica`
+      ? `${n} letras já fecham · Espaço ou Tab completa, seu case fica`
       : typoHit
         ? "nenhum prefixo · correção de typo — Tab aplica a certa no seu case"
-        : `${suggestions.length} na lista · Tab não altera o que você já escreveu`;
+        : ghost.add
+          ? `Tab acrescenta “${ghost.add}” · o que você já escreveu não muda`
+          : `${suggestions.length} na lista · Tab não altera o que você já escreveu`;
 
     listEl.replaceChildren(
       ...suggestions.map((item, i) => {
@@ -371,7 +143,17 @@
         li.setAttribute("aria-selected", i === selected ? "true" : "false");
         li.dataset.index = String(i);
         const name = document.createElement("span");
-        name.textContent = item.display || item.word;
+        const parts = C.ghostParts(current, item.word);
+        if (parts.keep && parts.add) {
+          const keepEl = document.createElement("span");
+          keepEl.textContent = parts.keep;
+          const addEl = document.createElement("span");
+          addEl.className = "ghost-add";
+          addEl.textContent = parts.add;
+          name.append(keepEl, addEl);
+        } else {
+          name.textContent = item.display || item.word;
+        }
         const metaEl = document.createElement("span");
         metaEl.className = "meta";
         metaEl.textContent = item.tag;
@@ -383,12 +165,24 @@
   }
 
   function renderResult() {
-    const { accepted, current } = splitDraft(draftEl.value);
-    const tokens = current ? accepted.concat(current) : accepted;
-    resultEl.textContent = format(tokens, currentStyle());
+    const tokens = C.tokensFromDraft(draftEl.value);
+    const style = currentStyle();
+    const text = C.format(tokens, style);
+    resultEl.textContent = text;
     resultEl.classList.toggle("is-hidden", hidden);
 
-    const count = words.length.toLocaleString("pt-BR");
+    if (formatWarnEl) {
+      if (C.formatDestroysUserCase(tokens, style)) {
+        formatWarnEl.hidden = false;
+        formatWarnEl.textContent =
+          "Este formato altera maiúsculas/minúsculas. “como digitado” copia exatamente o que você escreveu.";
+      } else {
+        formatWarnEl.hidden = true;
+        formatWarnEl.textContent = "";
+      }
+    }
+
+    const count = index.words.length.toLocaleString("pt-BR");
     if (!tokens.length) {
       statusEl.textContent = `${count} palavras na lista`;
       statusEl.className = "status";
@@ -397,9 +191,10 @@
       return;
     }
 
+    const { accepted, current } = C.splitDraft(draftEl.value);
     const finishedUnknown = unknown(accepted);
     const stuckUnknown =
-      current && !byLower.has(current.toLowerCase()) && suggestions.length === 0
+      current && !index.byLower.has(current.toLowerCase()) && suggestions.length === 0
         ? [current]
         : [];
     const allBad = finishedUnknown.concat(stuckUnknown);
@@ -423,7 +218,7 @@
     if (allBad.length) {
       statusEl.textContent = `${tokens.length} · fora da lista: ${allBad.join(", ")}`;
       statusEl.className = "status warn";
-    } else if (current && !byLower.has(current.toLowerCase())) {
+    } else if (current && !index.byLower.has(current.toLowerCase())) {
       statusEl.textContent = `${accepted.length} confirmadas · escrevendo…`;
       statusEl.className = "status";
     } else {
@@ -438,9 +233,8 @@
   }
 
   function accept(word) {
-    const { accepted, current } = splitDraft(draftEl.value);
-    const filled = completePreserving(current, word);
-    draftEl.value = `${[...accepted, filled].join(" ")} `;
+    acceptStack.push(draftEl.value);
+    replaceDraft(C.applyAccept(draftEl.value, word));
     selected = 0;
     copyNote.hidden = true;
     render();
@@ -452,10 +246,27 @@
     return true;
   }
 
+  function undoAccept() {
+    if (acceptStack.length) {
+      replaceDraft(acceptStack.pop());
+      selected = 0;
+      copyNote.hidden = true;
+      render();
+      return true;
+    }
+    const next = C.undoLastAccept(draftEl.value);
+    if (next === draftEl.value) return false;
+    replaceDraft(next);
+    selected = 0;
+    copyNote.hidden = true;
+    render();
+    return true;
+  }
+
   function setList(id) {
     activeId = catalog[id] ? id : "eff_large";
     if (listSelect && listSelect.value !== activeId) listSelect.value = activeId;
-    indexActive();
+    index = C.createIndex(catalog[activeId] || [], currentMeta().uniquePrefix || 0);
     updateKicker();
     selected = 0;
     render();
@@ -492,8 +303,23 @@
     render();
   });
 
+  draftEl.addEventListener("paste", () => {
+    copyNote.hidden = true;
+  });
+
   draftEl.addEventListener("keydown", (event) => {
+    if (event.key === "Tab" && event.shiftKey) {
+      event.preventDefault();
+      undoAccept();
+      return;
+    }
     if (event.key === "Tab") {
+      if (!C.shouldInterceptTab(suggestions.length)) return;
+      event.preventDefault();
+      acceptSelected();
+      return;
+    }
+    if (event.key === " " && C.uniqueReady(C.splitDraft(draftEl.value).current, suggestions, currentMeta().uniquePrefix)) {
       event.preventDefault();
       acceptSelected();
       return;
@@ -537,7 +363,9 @@
   for (const input of styleInputs) input.addEventListener("change", renderResult);
 
   async function copyOutput() {
-    const text = outputText();
+    const tokens = C.tokensFromDraft(draftEl.value);
+    const style = currentStyle();
+    const text = C.copyPayload(draftEl.value, style);
     if (!text) return;
     try {
       if (navigator.clipboard && window.isSecureContext) {
@@ -554,7 +382,7 @@
         area.remove();
       }
       copyNote.hidden = false;
-      copyNote.textContent = "Copiado. A área de transferência é do seu sistema, não desta página.";
+      copyNote.textContent = C.copyNoteFor(text, style, tokens);
     } catch {
       copyNote.hidden = false;
       copyNote.textContent = "Não deu para copiar automaticamente. Selecione a saída e copie à mão.";
@@ -562,8 +390,11 @@
   }
 
   copyBtn.addEventListener("click", copyOutput);
+  resultEl.addEventListener("click", copyOutput);
+  resultEl.setAttribute("title", "Clique para copiar exatamente este texto");
   clearBtn.addEventListener("click", () => {
-    draftEl.value = "";
+    acceptStack = [];
+    replaceDraft("");
     selected = 0;
     copyNote.hidden = true;
     render();
