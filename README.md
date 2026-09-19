@@ -6,8 +6,8 @@ autocomplete roda só no navegador.
 
 ## De onde vêm as palavras
 
-O seletor **Todas** é a união (~93 mil únicas). Ou escolha a lista
-do programa que gerou a sua:
+O seletor abre na **EFF Large** (Bitwarden / KeePassXC, 7.776 palavras).
+**Todas** continua disponível como união (~93 mil).
 
 | Grupo | Lista | Quem usa |
 | --- | --- | --- |

@@ -39,7 +39,7 @@
   }
   catalog.all = all;
 
-  let activeId = "all";
+  let activeId = "eff_large";
   let words = [];
   let byLower = new Map();
   let prefixUnique = new Map();
@@ -400,7 +400,7 @@
         option.value = item.id;
         const count = (catalog[item.id] || []).length.toLocaleString("pt-BR");
         option.textContent = `${item.label} · ${count}`;
-        if (item.id === "all") option.selected = true;
+        if (item.id === "eff_large") option.selected = true;
         group.append(option);
       }
       listSelect.append(group);
@@ -509,5 +509,5 @@
   }
 
   buildListSelect();
-  setList("all");
+  setList("eff_large");
 })();

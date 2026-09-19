@@ -24,7 +24,7 @@
 
     <section class="lists" aria-labelledby="list-label">
       <h2 id="list-label">Lista de palavras</h2>
-      <p class="list-note">Padrão: união de todas. Ou escolha a lista do programa que gerou a sua.</p>
+      <p class="list-note">Padrão: EFF Large (Bitwarden / KeePassXC, 7.776 palavras, prefixo único de 3 letras).</p>
       <select id="wordlist" aria-labelledby="list-label"></select>
     </section>
 
@@ -93,7 +93,7 @@
       <summary>Como usar e o que esta página não faz</summary>
       <ul>
         <li>Não existe servidor nem banco: <code>words.js</code> já traz as listas. Depois do carregamento a página não faz pedido de rede.</li>
-        <li>Comece em <strong>Todas</strong>. Se ainda não sugerir, a palavra não está nessas listas — você pode digitar e copiar do mesmo jeito.</li>
+        <li>O padrão é a <strong>EFF Large</strong>. As 3 primeiras letras já identificam cada palavra. As outras listas continuam no seletor.</li>
         <li>Se uma palavra só existe numa lista (ex.: ritalin → EFF Large), a página avisa e você pode filtrar só nela.</li>
         <li>A passphrase vive só na memória desta aba. Sem cookies, <code>localStorage</code> ou analytics.</li>
         <li>GitHub Pages só entrega os arquivos. Para zero rastro de IP, baixe a pasta e abra o <code>index.html</code> offline.</li>
@@ -101,6 +101,6 @@
     </details>
   </main>
   <script src="words.js?v=3"></script>
-  <script src="app.js?v=5"></script>
+  <script src="app.js?v=6"></script>
 </body>
 </html>
