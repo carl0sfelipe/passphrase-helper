@@ -78,6 +78,8 @@
         <h2 id="out-label">Saída</h2>
         <p id="status" class="status"></p>
       </div>
+      <p id="list-hit" class="list-hit" hidden></p>
+      <button type="button" id="use-list" class="btn" hidden>Usar só esta lista</button>
       <pre id="result" class="result" aria-live="polite"></pre>
       <div class="actions">
         <button type="button" id="copy" class="btn primary">Copiar</button>
@@ -92,13 +94,13 @@
       <ul>
         <li>Não existe servidor nem banco: <code>words.js</code> já traz as listas. Depois do carregamento a página não faz pedido de rede.</li>
         <li>Comece em <strong>Todas</strong>. Se ainda não sugerir, a palavra não está nessas listas — você pode digitar e copiar do mesmo jeito.</li>
-        <li>EFF Large é a do Bitwarden/KeePassXC. 1Password, BIP-39, SLIP-39, Monero, Diceware, Orchard Street e Niceware também estão no seletor.</li>
+        <li>Se uma palavra só existe numa lista (ex.: ritalin → EFF Large), a página avisa e você pode filtrar só nela.</li>
         <li>A passphrase vive só na memória desta aba. Sem cookies, <code>localStorage</code> ou analytics.</li>
         <li>GitHub Pages só entrega os arquivos. Para zero rastro de IP, baixe a pasta e abra o <code>index.html</code> offline.</li>
       </ul>
     </details>
   </main>
   <script src="words.js?v=3"></script>
-  <script src="app.js?v=4"></script>
+  <script src="app.js?v=5"></script>
 </body>
 </html>

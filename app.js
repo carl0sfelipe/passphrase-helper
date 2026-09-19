@@ -15,6 +15,8 @@
   const styleInputs = document.querySelectorAll('input[name="style"]');
   const listSelect = document.getElementById("wordlist");
   const kickerEl = document.getElementById("kicker");
+  const listHitEl = document.getElementById("list-hit");
+  const useListBtn = document.getElementById("use-list");
 
   const listSets = {};
   for (const [id, arr] of Object.entries(lists)) {
@@ -254,6 +256,16 @@
     return tokens.filter((t) => !byLower.has(t.toLowerCase()));
   }
 
+  function listsContaining(tokens) {
+    const keys = tokens.map((t) => t.toLowerCase()).filter(Boolean);
+    if (!keys.length) return [];
+    return meta.filter((item) => {
+      if (item.id === "all") return false;
+      const set = listSets[item.id];
+      return set && keys.every((key) => set.has(key));
+    });
+  }
+
   function outputText() {
     const { accepted, current } = splitDraft(draftEl.value);
     const tokens = current ? accepted.concat(current) : accepted;
@@ -315,6 +327,22 @@
         : [];
     const allBad = finishedUnknown.concat(stuckUnknown);
 
+    const knownTokens = tokens.filter((t) => allSeen.has(t.toLowerCase()));
+    const homes = listsContaining(knownTokens);
+    if (homes.length === 1) {
+      listHitEl.hidden = false;
+      listHitEl.textContent = `estas palavras só cabem na ${homes[0].label}`;
+      useListBtn.hidden = activeId === homes[0].id;
+      useListBtn.dataset.listId = homes[0].id;
+    } else if (homes.length > 1 && homes.length <= 4) {
+      listHitEl.hidden = false;
+      listHitEl.textContent = `cabem em: ${homes.map((item) => item.short).join(", ")}`;
+      useListBtn.hidden = true;
+    } else {
+      listHitEl.hidden = true;
+      useListBtn.hidden = true;
+    }
+
     if (allBad.length) {
       statusEl.textContent = `${tokens.length} · fora da lista: ${allBad.join(", ")}`;
       statusEl.className = "status warn";
@@ -348,6 +376,7 @@
 
   function setList(id) {
     activeId = catalog[id] ? id : "all";
+    if (listSelect && listSelect.value !== activeId) listSelect.value = activeId;
     indexActive();
     updateKicker();
     selected = 0;
@@ -460,6 +489,10 @@
     selected = 0;
     copyNote.hidden = true;
     render();
+    draftEl.focus();
+  });
+  useListBtn.addEventListener("click", () => {
+    if (useListBtn.dataset.listId) setList(useListBtn.dataset.listId);
     draftEl.focus();
   });
   hideBtn.addEventListener("click", () => {
