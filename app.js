@@ -375,7 +375,7 @@
   }
 
   function setList(id) {
-    activeId = catalog[id] ? id : "all";
+    activeId = catalog[id] ? id : "eff_large";
     if (listSelect && listSelect.value !== activeId) listSelect.value = activeId;
     indexActive();
     updateKicker();
