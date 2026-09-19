@@ -110,10 +110,67 @@
     return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
   }
 
+  function isUpperLetter(ch) {
+    return ch !== ch.toLowerCase();
+  }
+
+  function isLowerLetter(ch) {
+    return ch !== ch.toUpperCase();
+  }
+
+  function letterFlags(typed) {
+    const flags = [];
+    for (const ch of typed) {
+      if (isUpperLetter(ch)) flags.push("U");
+      else if (isLowerLetter(ch)) flags.push("L");
+    }
+    return flags;
+  }
+
+  function paintCase(typed, dictLower) {
+    const flags = letterFlags(typed);
+    if (!flags.length) return dictLower;
+    if (flags.every((f) => f === "U")) return dictLower.toUpperCase();
+    if (flags.every((f) => f === "L")) return dictLower;
+
+    let fi = 0;
+    let out = "";
+    for (const ch of dictLower) {
+      const upper = ch.toUpperCase();
+      const lower = ch.toLowerCase();
+      if (upper === lower) {
+        out += ch;
+        continue;
+      }
+      if (fi < flags.length) {
+        out += flags[fi] === "U" ? upper : lower;
+        fi += 1;
+      } else {
+        out += lower;
+      }
+    }
+    return out;
+  }
+
+  function completePreserving(typed, dictWord) {
+    const dictLower = dictWord.toLowerCase();
+    const q = typed.toLowerCase();
+    if (dictLower === q) return typed;
+    if (dictLower.startsWith(q)) {
+      const rest = dictLower.slice(typed.length);
+      const flags = letterFlags(typed);
+      const allUpper = flags.length > 0 && flags.every((f) => f === "U");
+      return typed + (allUpper ? rest.toUpperCase() : rest);
+    }
+    return paintCase(typed, dictLower);
+  }
+
   function format(tokens, style) {
     if (!tokens.length) return "";
     const lower = tokens.map((w) => w.toLowerCase());
     switch (style) {
+      case "as-typed":
+        return tokens.join(" ");
       case "title":
         return tokens.map(cap).join(" ");
       case "sentence":
@@ -145,27 +202,33 @@
     return { accepted: parts.slice(0, -1), current: parts[parts.length - 1] };
   }
 
-  function levenshtein(a, b) {
+  function damerau(a, b) {
     if (Math.abs(a.length - b.length) > 2) return 99;
-    const rows = a.length + 1;
-    const cols = b.length + 1;
-    const prev = new Uint8Array(cols);
-    const cur = new Uint8Array(cols);
-    for (let j = 0; j < cols; j++) prev[j] = j;
-    for (let i = 1; i < rows; i++) {
+    const al = a.length;
+    const bl = b.length;
+    const prev2 = new Uint8Array(bl + 1);
+    const prev = new Uint8Array(bl + 1);
+    const cur = new Uint8Array(bl + 1);
+    for (let j = 0; j <= bl; j++) prev[j] = j;
+    for (let i = 1; i <= al; i++) {
       cur[0] = i;
-      let min = cur[0];
+      let rowMin = cur[0];
       const ca = a.charCodeAt(i - 1);
-      for (let j = 1; j < cols; j++) {
+      const ca2 = i > 1 ? a.charCodeAt(i - 2) : 0;
+      for (let j = 1; j <= bl; j++) {
         const cost = ca === b.charCodeAt(j - 1) ? 0 : 1;
-        const val = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + cost);
+        let val = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + cost);
+        if (i > 1 && j > 1 && ca === b.charCodeAt(j - 2) && ca2 === b.charCodeAt(j - 1)) {
+          val = Math.min(val, prev2[j - 2] + 1);
+        }
         cur[j] = val;
-        if (val < min) min = val;
+        if (val < rowMin) rowMin = val;
       }
-      if (min > 2) return 99;
+      if (rowMin > 2) return 99;
+      prev2.set(prev);
       prev.set(cur);
     }
-    return prev[b.length];
+    return prev[bl];
   }
 
   function rank(query) {
@@ -184,14 +247,18 @@
         starts.push(word);
         continue;
       }
-      if (q.length >= 3 && w.includes(q)) {
-        contains.push(word);
-        continue;
+      if (q.length >= 3 && w.includes(q)) contains.push(word);
+    }
+
+    if (!starts.length && q.length >= 3) {
+      const maxDistance = q.length >= 4 ? 2 : 1;
+      for (const word of words) {
+        const w = word.toLowerCase();
+        if (w === q || w.startsWith(q)) continue;
+        if (Math.abs(w.length - q.length) > maxDistance) continue;
+        const d = damerau(q, w);
+        if (d > 0 && d <= maxDistance) near.push({ word, d });
       }
-      const maxDistance = q.length >= 4 ? 2 : q.length === 3 ? 1 : 0;
-      if (!maxDistance) continue;
-      const d = levenshtein(q, w);
-      if (d <= maxDistance) near.push({ word, d });
     }
 
     const preferred = ["eff_large", "bip39_en", "onepassword", "english10k", "slip39", "monero_en", "diceware"];
@@ -216,11 +283,16 @@
 
     const out = [];
     const seen = new Set();
-    const push = (word, tag) => {
+    const push = (word, tag, kind) => {
       const key = word.toLowerCase();
       if (seen.has(key)) return;
       seen.add(key);
-      out.push({ word, tag });
+      out.push({
+        word,
+        tag,
+        kind,
+        display: completePreserving(query, word),
+      });
     };
 
     for (const word of starts) {
@@ -232,15 +304,15 @@
       if (word.toLowerCase() === q) tag = "exata";
       else if (unique) tag = "prefixo único";
       else if (activeId === "all") tag = sourceTag(word) || tag;
-      push(word, tag);
+      push(word, tag, "prefix");
     }
 
     if (!starts.length) {
       for (const word of contains) {
-        push(word, activeId === "all" ? sourceTag(word) || "contém" : "contém");
+        push(word, activeId === "all" ? sourceTag(word) || "contém" : "contém", "contains");
       }
       for (const item of near) {
-        push(item.word, "perto");
+        push(item.word, item.d === 1 ? "typo 1" : "typo 2", "typo");
       }
     }
 
@@ -249,7 +321,7 @@
 
   function currentStyle() {
     const checked = document.querySelector('input[name="style"]:checked');
-    return checked ? checked.value : "lower-space";
+    return checked ? checked.value : "as-typed";
   }
 
   function unknown(tokens) {
@@ -284,10 +356,13 @@
     }
 
     const uniqueHit = suggestions[0]?.tag === "prefixo único";
+    const typoHit = suggestions[0]?.kind === "typo";
     const n = currentMeta().uniquePrefix;
     hintEl.textContent = uniqueHit
-      ? `${n} letras já fecham esta palavra — Tab completa`
-      : `${suggestions.length} na lista`;
+      ? `${n} letras já fecham esta palavra — Tab completa, seu case fica`
+      : typoHit
+        ? "nenhum prefixo · correção de typo — Tab aplica a certa no seu case"
+        : `${suggestions.length} na lista · Tab não altera o que você já escreveu`;
 
     listEl.replaceChildren(
       ...suggestions.map((item, i) => {
@@ -296,7 +371,7 @@
         li.setAttribute("aria-selected", i === selected ? "true" : "false");
         li.dataset.index = String(i);
         const name = document.createElement("span");
-        name.textContent = item.word;
+        name.textContent = item.display || item.word;
         const metaEl = document.createElement("span");
         metaEl.className = "meta";
         metaEl.textContent = item.tag;
@@ -317,6 +392,8 @@
     if (!tokens.length) {
       statusEl.textContent = `${count} palavras na lista`;
       statusEl.className = "status";
+      listHitEl.hidden = true;
+      useListBtn.hidden = true;
       return;
     }
 
@@ -361,8 +438,9 @@
   }
 
   function accept(word) {
-    const { accepted } = splitDraft(draftEl.value);
-    draftEl.value = `${[...accepted, word].join(" ")} `;
+    const { accepted, current } = splitDraft(draftEl.value);
+    const filled = completePreserving(current, word);
+    draftEl.value = `${[...accepted, filled].join(" ")} `;
     selected = 0;
     copyNote.hidden = true;
     render();

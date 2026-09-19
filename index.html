@@ -16,8 +16,8 @@
       <p class="kicker" id="kicker">todas as listas</p>
       <h1>Ajudante de passphrase</h1>
       <p class="lede">
-        Não há banco de dados. As listas oficiais de passphrase (gerenciadores,
-        carteiras, Diceware) estão neste arquivo. <strong>Tab</strong> completa.
+        Digite o que conseguir ler. O que você escreveu (maiúscula/minúscula) não se altera.
+        <strong>Tab</strong> só completa. Se não houver opção, corrige typo de 1–2 letras e ainda respeita o seu case.
         Nada é enviado, gravado ou medido.
       </p>
     </header>
@@ -60,7 +60,8 @@
     <section class="format" aria-labelledby="format-label">
       <h2 id="format-label">Formato da saída</h2>
       <div class="pills" role="radiogroup" aria-label="Estilo">
-        <label class="pill"><input type="radio" name="style" value="lower-space" checked> espaços</label>
+        <label class="pill"><input type="radio" name="style" value="as-typed" checked> como digitado</label>
+        <label class="pill"><input type="radio" name="style" value="lower-space"> espaços minúsculos</label>
         <label class="pill"><input type="radio" name="style" value="title"> Title Case</label>
         <label class="pill"><input type="radio" name="style" value="sentence"> frase</label>
         <label class="pill"><input type="radio" name="style" value="camel"> camelCase</label>
@@ -93,7 +94,10 @@
       <summary>Como usar e o que esta página não faz</summary>
       <ul>
         <li>Não existe servidor nem banco: <code>words.js</code> já traz as listas. Depois do carregamento a página não faz pedido de rede.</li>
-        <li>O padrão é a <strong>EFF Large</strong>. As 3 primeiras letras já identificam cada palavra. As outras listas continuam no seletor.</li>
+        <li>O que você digitou é lei: Tab não passa a palavra para minúsculas. Só acrescenta o resto, no mesmo padrão de case.</li>
+        <li>Se não houver opção na lista, a busca por typo (1–2 letras, inclusive letras trocadas) sugere a palavra certa e o Tab aplica o seu case nela.</li>
+        <li>A saída padrão é <strong>como digitado</strong>. CamelCase e os outros formatos só mudam a cópia se você escolher.</li>
+        <li>O padrão da lista é a <strong>EFF Large</strong>. As 3 primeiras letras já identificam cada palavra.</li>
         <li>Se uma palavra só existe numa lista (ex.: ritalin → EFF Large), a página avisa e você pode filtrar só nela.</li>
         <li>A passphrase vive só na memória desta aba. Sem cookies, <code>localStorage</code> ou analytics.</li>
         <li>GitHub Pages só entrega os arquivos. Para zero rastro de IP, baixe a pasta e abra o <code>index.html</code> offline.</li>
@@ -101,6 +105,6 @@
     </details>
   </main>
   <script src="words.js?v=3"></script>
-  <script src="app.js?v=6"></script>
+  <script src="app.js?v=7"></script>
 </body>
 </html>
